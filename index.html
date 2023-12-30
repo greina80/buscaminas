@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Buscaminas</title>
+        <link rel="stylesheet" href="./css/buscaminas.css">
+        <script src="./js/buscaminas.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+        <div class="window">
+            <div class="title-bar">
+                <img src="./img/mine.svg"/>
+                <span>Buscaminas</span>
+            </div>
+            <div class="content">
+                <div class="menu">
+                    <div class="item">
+                        <span>Juego</span>
+                        <div class="submenu">
+                            <div class="item">
+                                <span>&nbsp;</span>
+                                <span>Nuevo</span>
+                                <span>F2</span>
+                            </div>
+                            <hr class="separator"/>
+                            <div class="item">
+                                <span>
+                                    <svg>
+                                        <use xlink:href="#tick"/>
+                                    </svg>
+                                </span>
+                                <span>Principiante</span>
+                                <span>&nbsp;</span>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="item">
+                        <span>Ayuda</span>
+                    </div>
+                </ol>
+            </div>
+        </div>
+
+        <svg display="none">
+            <symbol id="tick" viewBox="0 0 6 6">
+                <polygon points="0,2 2,4 6,0 6,2 2,6 0,4"/>
+            </symbol>
+        </svg>
+    </body>
+
+</html>
