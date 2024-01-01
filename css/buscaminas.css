@@ -1,3 +1,7 @@
+/**
+ * GLOBAL
+ */
+
 * {
     padding: 0;
     margin: 0;
@@ -15,6 +19,12 @@ body {
     background: linear-gradient(white, gray);  
 }
 
+
+
+/**
+ * WINDOW
+ */
+
 .window {
     border: 1px solid darkblue;
     border-radius: 0.5rem 0.5rem 0 0;
@@ -22,7 +32,7 @@ body {
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
 }
 
-.title-bar {
+.window .title-bar {
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
@@ -34,10 +44,16 @@ body {
     font-size: large;   
     text-shadow: 1px 1px 1px darkblue;
 }
-.title-bar > img {
+.window .title-bar > img {
     width: 1rem;
     height: 1rem;
 }
+
+
+
+/**
+ * MENU
+ */
 
 .menu {
     display: flex;
@@ -45,18 +61,29 @@ body {
     background-color: #ECE9D8;
     border-bottom: 4px solid white;
 }
+
 .menu > .item > span {
     display: inline-block;
     padding: 0.25rem 0.75rem;
+    z-index: 2;
+    position: relative;
 }
 .menu > .item > span:hover,
 .menu > .item.expanded > span { 
     color: white;
     background-color: #316AC5;
 }
-.menu > .item:not(.expanded) > .submenu {
-    display: none;
+.menu > .item.expanded > .submenu {
+    opacity: 2;
+    transform: translateY(0rem);
+    visibility: visible;
 }
+
+
+
+/**
+ * SUBMENU
+ */
 
 .submenu {
     position: absolute;
@@ -66,6 +93,10 @@ body {
     grid-template-columns: auto auto auto;
     padding: 0.1rem;
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+    transition: 0.2s ease-in-out;
+    transform: translateY(-1rem);
+    opacity: 0;
+    visibility: hidden;
 }
 .submenu > .item {
     display: contents;
