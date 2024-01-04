@@ -20,19 +20,37 @@
                     <div class="item">
                         <span>Juego</span>
                         <div class="submenu">
-                            <div class="item">
+                            <div class="item" onclick="startNewGame()">
                                 <span></span>
                                 <span>Nuevo</span>
                                 <span>F2</span>
                             </div>
                             <hr class="separator"/>
-                            <div class="item">
+                            <div class="item level" onclick="setLevel(0)">
                                 <span>
                                     <svg>
                                         <use xlink:href="#tick"/>
                                     </svg>
                                 </span>
                                 <span>Principiante</span>
+                                <span></span>
+                            </div>
+                            <div class="item level" onclick="setLevel(1)">
+                                <span>
+                                    <svg>
+                                        <use xlink:href="#tick"/>
+                                    </svg>
+                                </span>
+                                <span>Intermedio</span>
+                                <span></span>
+                            </div>
+                            <div class="item level" onclick="setLevel(2)">
+                                <span>
+                                    <svg>
+                                        <use xlink:href="#tick"/>
+                                    </svg>
+                                </span>
+                                <span>Experto</span>
                                 <span></span>
                             </div>
                         </div>                        
@@ -47,7 +65,7 @@
                         <span class="placeholder">888</span>
                     </div>
                     <div class="main-button">
-                        <button>
+                        <button onclick="startNewGame()">
                             <span id="btn-face">&#128578;</span>
                         </button>
                     </div>
@@ -55,6 +73,11 @@
                         <span id="num-seconds">000</span>
                         <span class="placeholder">888</span>
                     </div>
+                </div>
+                <div class="game-board">
+                    <table>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>

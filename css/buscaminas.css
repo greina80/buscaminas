@@ -54,6 +54,7 @@ body {
     font-weight: bold; 
     text-shadow: 1px 1px 1px darkblue;
 }
+
 .window .title-bar > img {
     width: 1rem;
     height: 1rem;
@@ -78,10 +79,12 @@ body {
     z-index: 2;
     position: relative;
 }
+
 .menu > .item > span:hover { 
     color: white;
     background-color: var(--hover-color);
 }
+
 .menu > .item:hover > .submenu {
     opacity: 2;
     transform: translateY(0rem);
@@ -113,24 +116,33 @@ body {
     visibility: hidden;
     z-index: 1;
 }
+
 .submenu > .item {
     display: contents;
 }
+
 .submenu > .item > span {
     padding: var(--column-gap);
     display: flex;
     align-items: center;
 }
+
 .submenu > .item svg {
     width: 0.5rem;
     height: 0.5rem;
     margin-left: var(--column-gap);
 }
+
+.submenu > .item:not(.selected) svg {
+    display: none;
+}
+
 .submenu > .item:hover > span {
     background-color: var(--hover-color);
     color: white;
     fill: white;
 }
+
 .submenu > .separator {
     grid-column: span 3;
     height: var(--border-width);
@@ -145,48 +157,88 @@ body {
  */
 
 .scoreboard {
-    --digits-size: 3rem;
+    --digits-size: 2.5rem;
 
-    border: 0.2rem solid;
+    border: 3px solid;
     border-color: var(--border-in-colors);
     margin: 0.5rem;
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    height: 2.4rem;
+    height: 2rem;
 }
-.scoreboard .counter {
+
+
+
+/**
+ * COUNTER
+ */
+
+.counter {
     border: 1px solid;
     border-color: var(--border-in-colors);    
     background-color: black;
     color: red;
     position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }
-.scoreboard .counter > span {
+
+.counter > span {
     font-family: 'digital-7', sans-serif;
     font-size: var(--digits-size);
 }
-.scoreboard .counter .placeholder {
+
+.counter .placeholder {
     position: absolute;
     left: 0;
     opacity: 0.3;
 }
-.scoreboard .main-button {
+
+
+
+/**
+ * MAIN BUTTON
+ */
+
+.main-button {
     border: 1px solid gray;    
     display: flex; 
     margin: 0 0.5rem; 
 }
-.scoreboard .main-button button {
+
+.main-button button {
     background-color: unset;    
-    font-size: 1.3rem;
+    font-size: 1rem;
     line-height: var(--digits-size);
-    border: 0.2rem solid;
+    border: 3px solid;
     border-color: var(--border-out-colors);
-}
-.scoreboard .counter,
-.scoreboard button {
     overflow: hidden;
     display: flex;
     align-items: center;
+}
+
+
+
+/**
+ * GAME BOARD
+ */
+
+.game-board {
+    border: 3px solid;
+    border-color: var(--border-in-colors);
+    margin: 0.5rem;
+}
+
+.game-board table {
+    border-spacing: 0;
+}
+
+.game-board td {
+    border: 3px solid;
+    border-color: var(--border-out-colors);
+    height: 1rem;
+    width: 1rem;
 }
