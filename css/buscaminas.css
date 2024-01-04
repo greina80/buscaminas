@@ -7,6 +7,12 @@
     src: url('../fonts/digital-7-mono.ttf');
   }
 
+:root {
+    --hover-color: #316AC5;
+    --border-in-colors: gray white white gray;
+    --border-out-colors: white gray gray white;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -14,7 +20,7 @@
     cursor: default;
     font-family: sans-serif;  
     user-select: none;
-  }
+}
 
 body {
     display: grid;
@@ -74,7 +80,7 @@ body {
 }
 .menu > .item > span:hover { 
     color: white;
-    background-color: #316AC5;
+    background-color: var(--hover-color);
 }
 .menu > .item:hover > .submenu {
     opacity: 2;
@@ -89,12 +95,17 @@ body {
  */
 
 .submenu {
+    --padding: 2px;
+    --column-gap: 0.25rem;
+    --border-width: 1px;
+    --border-color: gray;
+
     position: absolute;
-    border: 1px solid gray;
+    border: var(--border-width) solid var(--border-color);
     background-color: white;
     display: grid;
     grid-template-columns: auto auto auto;
-    padding: 2px;
+    padding: var(--padding);
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
     transition: 0.2s ease-in-out;
     transform: translateY(-1rem);
@@ -106,25 +117,25 @@ body {
     display: contents;
 }
 .submenu > .item > span {
-    padding: 0.25rem;
+    padding: var(--column-gap);
     display: flex;
     align-items: center;
 }
 .submenu > .item svg {
     width: 0.5rem;
     height: 0.5rem;
-    margin-left: 0.25rem;
+    margin-left: var(--column-gap);
 }
 .submenu > .item:hover > span {
-    background-color: #316AC5;
+    background-color: var(--hover-color);
     color: white;
     fill: white;
 }
 .submenu > .separator {
     grid-column: span 3;
-    height: 1px;
-    background-color: gray;
-    margin: 2px 0;
+    height: var(--border-width);
+    background-color: var(--border-color);
+    margin: var(--padding) 0;
 }
 
 
@@ -134,8 +145,10 @@ body {
  */
 
 .scoreboard {
+    --digits-size: 2rem;
+
     border: 2px solid;
-    border-color: gray white white gray;
+    border-color: var(--border-in-colors);
     margin: 0.5rem;
     padding: 0.25rem;
     display: flex;
@@ -145,14 +158,14 @@ body {
 }
 .scoreboard .counter {
     border: 1px solid;
-    border-color: gray white white gray;    
+    border-color: var(--border-in-colors);    
     background-color: black;
     color: red;
     position: relative;
 }
 .scoreboard .counter > span {
     font-family: 'digital-7', sans-serif;
-    font-size: 2rem;
+    font-size: var(--digits-size);
 }
 .scoreboard .counter .placeholder {
     position: absolute;
@@ -166,9 +179,9 @@ body {
 .scoreboard .main-button button {
     background-color: unset;    
     font-size: 1rem;
+    line-height: var(--digits-size);
     border: 2px solid;
-    border-color: white gray gray white;
-    padding-bottom: 0.1rem;
+    border-color: var(--border-out-colors);
 }
 .scoreboard .counter,
 .scoreboard button {
