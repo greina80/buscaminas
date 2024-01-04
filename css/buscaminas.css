@@ -2,6 +2,11 @@
  * GLOBAL
  */
 
+  @font-face {
+    font-family: 'digital-7';
+    src: url('../fonts/digital-7-mono.ttf');
+  }
+
 * {
     padding: 0;
     margin: 0;
@@ -9,7 +14,6 @@
     cursor: default;
     font-family: sans-serif;  
     user-select: none;
-    line-height: 1rem;
   }
 
 body {
@@ -30,6 +34,7 @@ body {
     border-radius: 0.5rem 0.5rem 0 0;
     overflow: hidden;
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+    background-color: #C0C0C0;
 }
 
 .window .title-bar {
@@ -41,7 +46,6 @@ body {
     background: linear-gradient(#3593FF 0%, #0055E5 20%, #0055E5 80%, darkblue 100%);
     color: white;
     font-weight: bold; 
-    font-size: large;   
     text-shadow: 1px 1px 1px darkblue;
 }
 .window .title-bar > img {
@@ -68,12 +72,11 @@ body {
     z-index: 2;
     position: relative;
 }
-.menu > .item > span:hover,
-.menu > .item.expanded > span { 
+.menu > .item > span:hover { 
     color: white;
     background-color: #316AC5;
 }
-.menu > .item.expanded > .submenu {
+.menu > .item:hover > .submenu {
     opacity: 2;
     transform: translateY(0rem);
     visibility: visible;
@@ -91,12 +94,13 @@ body {
     background-color: white;
     display: grid;
     grid-template-columns: auto auto auto;
-    padding: 0.1rem;
+    padding: 2px;
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
     transition: 0.2s ease-in-out;
     transform: translateY(-1rem);
     opacity: 0;
     visibility: hidden;
+    z-index: 1;
 }
 .submenu > .item {
     display: contents;
@@ -120,5 +124,55 @@ body {
     grid-column: span 3;
     height: 1px;
     background-color: gray;
-    margin: 0.1rem 0;
+    margin: 2px 0;
+}
+
+
+
+/**
+ * SCOREBOARD
+ */
+
+.scoreboard {
+    border: 2px solid;
+    border-color: gray white white gray;
+    margin: 0.5rem;
+    padding: 0.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 1.8rem;
+}
+.scoreboard .counter {
+    border: 1px solid;
+    border-color: gray white white gray;    
+    background-color: black;
+    color: red;
+    position: relative;
+}
+.scoreboard .counter > span {
+    font-family: 'digital-7', sans-serif;
+    font-size: 2rem;
+}
+.scoreboard .counter .placeholder {
+    position: absolute;
+    left: 0;
+    opacity: 0.3;
+}
+.scoreboard .main-button {
+    border: 1px solid gray;    
+    display: flex;  
+}
+.scoreboard .main-button button {
+    background-color: unset;    
+    font-size: 1rem;
+    border: 2px solid;
+    border-color: white gray gray white;
+    padding-bottom: 0.1rem;
+}
+.scoreboard .counter,
+.scoreboard button {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }
