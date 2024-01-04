@@ -145,16 +145,16 @@ body {
  */
 
 .scoreboard {
-    --digits-size: 2rem;
+    --digits-size: 3rem;
 
-    border: 2px solid;
+    border: 0.2rem solid;
     border-color: var(--border-in-colors);
     margin: 0.5rem;
-    padding: 0.25rem;
+    padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    height: 1.8rem;
+    height: 2.4rem;
 }
 .scoreboard .counter {
     border: 1px solid;
@@ -174,13 +174,14 @@ body {
 }
 .scoreboard .main-button {
     border: 1px solid gray;    
-    display: flex;  
+    display: flex; 
+    margin: 0 0.5rem; 
 }
 .scoreboard .main-button button {
     background-color: unset;    
-    font-size: 1rem;
+    font-size: 1.3rem;
     line-height: var(--digits-size);
-    border: 2px solid;
+    border: 0.2rem solid;
     border-color: var(--border-out-colors);
 }
 .scoreboard .counter,
