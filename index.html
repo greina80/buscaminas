@@ -16,48 +16,53 @@
                 <span>Buscaminas</span>
             </div>
             <div class="content">
-                <div class="menu">
+                <div class="menu">                    
                     <div class="item">
                         <span>Juego</span>
-                        <div class="submenu">
-                            <div class="item" onclick="startNewGame()">
-                                <span></span>
-                                <span>Nuevo</span>
-                                <span>F2</span>
-                            </div>
-                            <hr class="separator"/>
-                            <div class="item level" onclick="setLevel(0)">
-                                <span>
+                        <table class="submenu">
+                            <tr onclick="startNewGame()">
+                                <td></td>
+                                <td>Nuevo</td>
+                                <td>F2</td>
+                            </tr>
+                            <tr class="separator">
+                                <td colspan="3">
+                                    <hr/>
+                                </td>
+                            </tr>
+                            <tr class="level" onclick="setLevel(0)">
+                                <td>
                                     <svg>
                                         <use xlink:href="#tick"/>
                                     </svg>
-                                </span>
-                                <span>Principiante</span>
-                                <span></span>
-                            </div>
-                            <div class="item level" onclick="setLevel(1)">
-                                <span>
+                                </td>
+                                <td>Principiante</td>
+                                <td></td>
+                            </tr>
+                            <tr class="level" onclick="setLevel(1)">
+                                <td>
                                     <svg>
                                         <use xlink:href="#tick"/>
                                     </svg>
-                                </span>
-                                <span>Intermedio</span>
-                                <span></span>
-                            </div>
-                            <div class="item level" onclick="setLevel(2)">
-                                <span>
+                                </td>
+                                <td>Intermedio</td>
+                                <td></td>
+                            </tr>
+                            <tr class="level" onclick="setLevel(2)">
+                                <td>
                                     <svg>
                                         <use xlink:href="#tick"/>
                                     </svg>
-                                </span>
-                                <span>Experto</span>
-                                <span></span>
-                            </div>
-                        </div>                        
+                                </td>
+                                <td>Experto</td>
+                                <td></td>
+                            </tr>
+                        </table>                        
                     </div>
                     <div class="item">
                         <span>Ayuda</span>
                     </div>
+                    <div></div>
                 </div>
                 <div class="scoreboard">
                     <div class="counter">
@@ -65,9 +70,7 @@
                         <span class="placeholder">888</span>
                     </div>
                     <div class="main-button">
-                        <button onclick="startNewGame()">
-                            <span id="btn-face">&#128578;</span>
-                        </button>
+                        <button onclick="startNewGame()">&#128578;</button>
                     </div>
                     <div class="counter">
                         <span id="num-seconds">000</span>
@@ -75,9 +78,7 @@
                     </div>
                 </div>
                 <div class="game-board">
-                    <table>
-                        <tbody></tbody>
-                    </table>
+                    <table></table>
                 </div>
             </div>
         </div>

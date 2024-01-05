@@ -41,6 +41,7 @@ body {
     overflow: hidden;
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
     background-color: #C0C0C0;
+    width: fit-content;
 }
 
 .window .title-bar {
@@ -55,7 +56,7 @@ body {
     text-shadow: 1px 1px 1px darkblue;
 }
 
-.window .title-bar > img {
+.window .title-bar img {
     width: 1rem;
     height: 1rem;
 }
@@ -69,23 +70,31 @@ body {
 .menu {
     display: flex;
     align-items: center;
-    background-color: #ECE9D8;
     border-bottom: 4px solid white;
 }
 
-.menu > .item > span {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
+.menu > div:last-child {
+    flex-grow: 1;
+    align-self: stretch;
+    background-color: #ECE9D8;
     z-index: 2;
-    position: relative;
 }
 
-.menu > .item > span:hover { 
+.menu .item > span {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    position: relative;  
+    background-color: #ECE9D8;
+    z-index: 2;  
+}
+
+.menu .item:hover > span,
+.menu.expanded .item.active > span { 
     color: white;
     background-color: var(--hover-color);
 }
 
-.menu > .item:hover > .submenu {
+.menu.expanded .item.active .submenu {
     opacity: 2;
     transform: translateY(0rem);
     visibility: visible;
@@ -98,56 +107,51 @@ body {
  */
 
 .submenu {
-    --padding: 2px;
-    --column-gap: 0.25rem;
-    --border-width: 1px;
-    --border-color: gray;
+    --submenu-padding: 2px;
+    --submenu-column-gap: 0.5rem;
+    --submenu-border-width: 1px;
+    --submenu-border-color: gray;
 
     position: absolute;
-    border: var(--border-width) solid var(--border-color);
+    border-spacing: 0;
+    border: var(--submenu-border-width) solid var(--submenu-border-color);
     background-color: white;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    padding: var(--padding);
+    padding: var(--submenu-padding);
     box-shadow: 0.5rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
-    transition: 0.2s ease-in-out;
-    transform: translateY(-1rem);
-    opacity: 0;
-    visibility: hidden;
     z-index: 1;
+    
+    transition: 0.2s ease-in-out;
+
+    opacity: 0;
+    transform: translateY(-1rem);
+    visibility: hidden;
 }
 
-.submenu > .item {
-    display: contents;
-}
-
-.submenu > .item > span {
-    padding: var(--column-gap);
-    display: flex;
-    align-items: center;
-}
-
-.submenu > .item svg {
+.submenu svg {
     width: 0.5rem;
     height: 0.5rem;
-    margin-left: var(--column-gap);
+    margin-left: var(--submenu-column-gap);
+    display: block;
 }
 
-.submenu > .item:not(.selected) svg {
+.submenu tr:not(.selected) svg {
     display: none;
 }
 
-.submenu > .item:hover > span {
+.submenu tr:not(.separator) td {
+    padding: 0.2rem var(--submenu-column-gap) 0.2rem 0;
+}
+
+.submenu tr:not(.separator):hover {
     background-color: var(--hover-color);
     color: white;
     fill: white;
 }
 
-.submenu > .separator {
-    grid-column: span 3;
-    height: var(--border-width);
-    background-color: var(--border-color);
-    margin: var(--padding) 0;
+.submenu .separator hr {
+    height: var(--submenu-border-width);
+    background-color: var(--submenu-border-color);
+    margin: var(--submenu-padding) 0;
 }
 
 
@@ -157,7 +161,7 @@ body {
  */
 
 .scoreboard {
-    --digits-size: 2.5rem;
+    --scoreboard-height: 2rem;
 
     border: 3px solid;
     border-color: var(--border-in-colors);
@@ -165,8 +169,6 @@ body {
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
-    height: 2rem;
 }
 
 
@@ -184,16 +186,16 @@ body {
     overflow: hidden;
     display: flex;
     align-items: center;
+    height: var(--scoreboard-height);
 }
 
-.counter > span {
+.counter span {
     font-family: 'digital-7', sans-serif;
-    font-size: var(--digits-size);
+    font-size: 2.5rem;
 }
 
 .counter .placeholder {
     position: absolute;
-    left: 0;
     opacity: 0.3;
 }
 
@@ -205,19 +207,19 @@ body {
 
 .main-button {
     border: 1px solid gray;    
-    display: flex; 
-    margin: 0 0.5rem; 
+    height: var(--scoreboard-height);
+    width: var(--scoreboard-height);
 }
 
 .main-button button {
     background-color: unset;    
-    font-size: 1rem;
-    line-height: var(--digits-size);
+    font-size: 1.1rem;
+    line-height: 1rem;
     border: 3px solid;
     border-color: var(--border-out-colors);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
 }
 
 
@@ -240,5 +242,5 @@ body {
     border: 3px solid;
     border-color: var(--border-out-colors);
     height: 1rem;
-    width: 1rem;
+    min-width: 1rem;
 }

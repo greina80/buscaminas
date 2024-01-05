@@ -19,13 +19,47 @@ const LEVEL = [
 
 let currentLevel = -1;
 
-document.addEventListener("DOMContentLoaded", function() {
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "F2") startNewGame();
+
+
+/**
+ * EVENT HANDLERS
+ */
+
+document.addEventListener("DOMContentLoaded", function() {    
+    document.addEventListener("click", onDocumentClick);    
+    document.addEventListener("keydown", onDocumentKeydown);
+
+    $(".menu .item").forEach(menuItem => {
+        menuItem.addEventListener("mouseenter", onMenuItemMouseEnter);
+        menuItem.addEventListener("click", onMenuItemClick);
     });
 
     setLevel(0);
 });
+
+function onDocumentClick(event) {
+    $(".menu")[0].classList.remove("expanded");
+}
+
+function onDocumentKeydown(event) {
+    if (event.key === "F2") startNewGame();
+}
+
+function onMenuItemMouseEnter(event) {
+    $(".menu .item.active")[0]?.classList.remove("active");
+    event.currentTarget.classList.add("active");
+}
+
+function onMenuItemClick(event) {
+    $(".menu")[0].classList.toggle("expanded");
+    event.stopPropagation();
+}
+
+
+
+/**
+ * GAME LOGIC
+ */
 
 function setLevel(newLevel) {
     if (newLevel !== currentLevel) {
@@ -38,16 +72,17 @@ function setLevel(newLevel) {
 }
 
 function startNewGame() {
-    $(".game-board tbody")[0].replaceChildren();
+    $(".game-board table")[0].replaceChildren();
 
     for (let r = 0; r < LEVEL[currentLevel].rows; r++) {
         let row = document.createElement("tr");
-        $(".game-board tbody")[0].appendChild(row);
+        $(".game-board table")[0].appendChild(row);
 
         for (let c = 0; c < LEVEL[currentLevel].cols; c++) {
             row.appendChild(document.createElement("td"));
         } // for
     } // for
 
+    console.log("TO-DO: Start New Game!");
     // TO-DO
 }
