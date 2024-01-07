@@ -217,11 +217,11 @@ body {
 .main-button button {
     background-color: unset;    
     font-size: 1.1rem;
+    line-height: 1rem;
     border: 3px solid;
     border-color: var(--border-out-colors);
     height: 100%;
     width: 100%;
-    display: grid;
 }
 
 

@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setLevel(0);
 });
 
-function onDocumentClick(event) {
+function onDocumentClick(event) {    
     $(".menu")[0].classList.remove("expanded");
 }
 
@@ -46,12 +46,19 @@ function onDocumentKeydown(event) {
 }
 
 function onMenuItemMouseEnter(event) {
+    if (event.sourceCapabilities.firesTouchEvents) return;
     $(".menu .item.active")[0]?.classList.remove("active");
     event.currentTarget.classList.add("active");
 }
 
 function onMenuItemClick(event) {
-    $(".menu")[0].classList.toggle("expanded");
+    if (event.currentTarget === $(".menu.expanded .item.active")[0]) $(".menu")[0].classList.remove("expanded");
+    else {
+        $(".menu .item.active")[0]?.classList.remove("active");
+        event.currentTarget.classList.add("active");
+        $(".menu")[0].classList.add("expanded");
+    } // else
+
     event.stopPropagation();
 }
 
