@@ -62,6 +62,8 @@ function onMenuItemClick(event) {
  */
 
 function setLevel(newLevel) {
+    console.log(newLevel);
+    
     if (newLevel !== currentLevel) {
         $(".level")[currentLevel]?.classList.remove("selected");
         $(".level")[newLevel].classList.add("selected");

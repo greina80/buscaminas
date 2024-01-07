@@ -3,8 +3,8 @@
  */
 
   @font-face {
-    font-family: 'digital-7';
-    src: url('../fonts/digital-7-mono.ttf');
+    font-family: 'seven-segments';
+    src: url('../fonts/DSEG7ClassicMini-Bold.woff');
   }
 
 :root {
@@ -71,24 +71,29 @@ body {
     display: flex;
     align-items: center;
     border-bottom: 4px solid white;
+    background-color: #ECE9D8;
 }
-
 .menu > div:last-child {
     flex-grow: 1;
     align-self: stretch;
     background-color: #ECE9D8;
     z-index: 2;
 }
-
 .menu .item > span {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     position: relative;  
+    z-index: 2;
     background-color: #ECE9D8;
-    z-index: 2;  
 }
 
-.menu .item:hover > span,
+@media (hover: hover) {
+    .menu .item:hover > span {
+        color: white;
+        background-color: var(--hover-color);
+    }
+}
+
 .menu.expanded .item.active > span { 
     color: white;
     background-color: var(--hover-color);
@@ -142,10 +147,12 @@ body {
     padding: 0.2rem var(--submenu-column-gap) 0.2rem 0;
 }
 
-.submenu tr:not(.separator):hover {
-    background-color: var(--hover-color);
-    color: white;
-    fill: white;
+@media (hover: hover) {    
+    .submenu tr:not(.separator):hover {
+        background-color: var(--hover-color);
+        color: white;
+        fill: white;
+    }
 }
 
 .submenu .separator hr {
@@ -161,8 +168,6 @@ body {
  */
 
 .scoreboard {
-    --scoreboard-height: 2rem;
-
     border: 3px solid;
     border-color: var(--border-in-colors);
     margin: 0.5rem;
@@ -183,15 +188,13 @@ body {
     background-color: black;
     color: red;
     position: relative;
-    overflow: hidden;
     display: flex;
     align-items: center;
-    height: var(--scoreboard-height);
 }
 
 .counter span {
-    font-family: 'digital-7', sans-serif;
-    font-size: 2.5rem;
+    font-family: 'seven-segments', sans-serif;
+    font-size: 1.7rem;
 }
 
 .counter .placeholder {
@@ -207,19 +210,18 @@ body {
 
 .main-button {
     border: 1px solid gray;    
-    height: var(--scoreboard-height);
-    width: var(--scoreboard-height);
+    height: 2rem;
+    width: 2rem;
 }
 
 .main-button button {
     background-color: unset;    
     font-size: 1.1rem;
-    line-height: 1rem;
     border: 3px solid;
     border-color: var(--border-out-colors);
     height: 100%;
     width: 100%;
-    text-align: center;
+    display: grid;
 }
 
 
