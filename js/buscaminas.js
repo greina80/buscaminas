@@ -26,39 +26,29 @@ let currentLevel = -1;
  */
 
 document.addEventListener("DOMContentLoaded", function() {    
-    document.addEventListener("click", onDocumentClick);    
     document.addEventListener("keydown", onDocumentKeydown);
-
-    $(".menu .item").forEach(menuItem => {
-        menuItem.addEventListener("mouseenter", onMenuItemMouseEnter);
-        menuItem.addEventListener("click", onMenuItemClick);
-    });
+    
+    if (window.matchMedia("(hover: none)").matches) {
+        // When hover is not supported:
+        $(".menu .item > span").forEach(menuItem => menuItem.addEventListener("click", onMenuItemClick));
+        document.addEventListener("click", onDocumentClick);    
+    } // if
 
     setLevel(0);
 });
 
-function onDocumentClick(event) {    
-    $(".menu")[0].classList.remove("expanded");
+function onDocumentClick(_event) {    
+    $(".menu .item.expanded")[0]?.classList.remove("expanded");
 }
 
 function onDocumentKeydown(event) {
     if (event.key === "F2") startNewGame();
 }
 
-function onMenuItemMouseEnter(event) {
-    if (event.sourceCapabilities.firesTouchEvents) return;
-    $(".menu .item.active")[0]?.classList.remove("active");
-    event.currentTarget.classList.add("active");
-}
-
 function onMenuItemClick(event) {
-    if (event.currentTarget === $(".menu.expanded .item.active")[0]) $(".menu")[0].classList.remove("expanded");
-    else {
-        $(".menu .item.active")[0]?.classList.remove("active");
-        event.currentTarget.classList.add("active");
-        $(".menu")[0].classList.add("expanded");
-    } // else
-
+    if (event.currentTarget.parentElement.matches(".expanded")) return;
+    $(".menu .item.expanded")[0]?.classList.remove("expanded");
+    event.currentTarget.parentElement.classList.add("expanded");
     event.stopPropagation();
 }
 
