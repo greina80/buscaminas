@@ -18,6 +18,7 @@ const LEVEL = [
 ];
 
 let currentLevel = -1;
+let isMine = [];
 
 
 
@@ -47,6 +48,7 @@ function onDocumentKeydown(event) {
 
 function onMenuItemClick(event) {
     if (event.currentTarget.parentElement.matches(".expanded")) return;
+
     $(".menu .item.expanded")[0]?.classList.remove("expanded");
     event.currentTarget.parentElement.classList.add("expanded");
     event.stopPropagation();
@@ -59,29 +61,28 @@ function onMenuItemClick(event) {
  */
 
 function setLevel(newLevel) {
-    console.log(newLevel);
-    
-    if (newLevel !== currentLevel) {
-        $(".level")[currentLevel]?.classList.remove("selected");
-        $(".level")[newLevel].classList.add("selected");
-        currentLevel = newLevel;
-    } // if
+    if (newLevel === currentLevel) return;
 
+    $(".level")[currentLevel]?.classList.remove("selected");
+    $(".level")[newLevel].classList.add("selected");
+    currentLevel = newLevel;
     startNewGame();
 }
 
 function startNewGame() {
-    $(".game-board table")[0].replaceChildren();
+    let level = LEVEL[currentLevel];    
 
-    for (let r = 0; r < LEVEL[currentLevel].rows; r++) {
+    $(".game-board table")[0].replaceChildren();    
+    for (let r = 0; r < level.rows; r++) {
         let row = document.createElement("tr");
+        for (let c = 0; c < level.cols; c++) row.appendChild(document.createElement("td"));
         $(".game-board table")[0].appendChild(row);
-
-        for (let c = 0; c < LEVEL[currentLevel].cols; c++) {
-            row.appendChild(document.createElement("td"));
-        } // for
     } // for
-
-    console.log("TO-DO: Start New Game!");
-    // TO-DO
+    
+    isMine = Array.from({length: level.rows}, () => Array(level.cols).fill(false));
+    for (let i = 0; i < level.mines; i++) {
+        let position = Math.floor(Math.random() * ((level.rows * level.cols) - i));
+        while (isMine[Math.floor(position / level.cols)][position % level.cols]) position++;
+        isMine[Math.floor(position / level.cols)][position % level.cols] = true;
+    } // for
 }
