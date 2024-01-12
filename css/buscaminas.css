@@ -45,11 +45,8 @@ body {
 }
 
 .window .title-bar {
-    display: flex;
-    align-items: center;
-    padding: 0 0.5rem;
-    gap: 0.5rem;
-    height: 2rem;
+    padding: 0 0.3rem;
+    line-height: 2rem;
     background: linear-gradient(#3593FF 0%, #0055E5 20%, #0055E5 80%, darkblue 100%);
     color: white;
     font-weight: bold; 
@@ -249,4 +246,6 @@ body {
     border-color: var(--border-out-colors);
     height: 1rem;
     min-width: 1rem;
+    font-size: 0.7rem;
+    text-align: center;
 }

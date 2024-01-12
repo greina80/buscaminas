@@ -1,3 +1,7 @@
+/**
+ * CONSTANTS
+ */
+
 const $ = document.querySelectorAll.bind(document);
 const LEVEL = [
     {
@@ -17,8 +21,14 @@ const LEVEL = [
     }
 ];
 
+
+
+/**
+ * GLOBAL VARIABLES
+ */
+
 let currentLevel = -1;
-let isMine = [];
+let minePositions = [];
 
 
 
@@ -27,24 +37,17 @@ let isMine = [];
  */
 
 document.addEventListener("DOMContentLoaded", function() {    
-    document.addEventListener("keydown", onDocumentKeydown);
+    document.addEventListener("keydown", (event) => event.key === "F2" && startNewGame());
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
     
     if (window.matchMedia("(hover: none)").matches) {
         // When hover is not supported:
         $(".menu .item > span").forEach(menuItem => menuItem.addEventListener("click", onMenuItemClick));
-        document.addEventListener("click", onDocumentClick);    
+        document.addEventListener("click", () => $(".menu .item.expanded")[0]?.classList.remove("expanded"));    
     } // if
 
     setLevel(0);
 });
-
-function onDocumentClick(_event) {    
-    $(".menu .item.expanded")[0]?.classList.remove("expanded");
-}
-
-function onDocumentKeydown(event) {
-    if (event.key === "F2") startNewGame();
-}
 
 function onMenuItemClick(event) {
     if (event.currentTarget.parentElement.matches(".expanded")) return;
@@ -53,6 +56,42 @@ function onMenuItemClick(event) {
     event.currentTarget.parentElement.classList.add("expanded");
     event.stopPropagation();
 }
+
+function onCellLeftClick(event) {
+    if (event.currentTarget.matches(".flagged")) return;
+    if (minePositions.includes(event.currentTarget.dataset.position)) return gameLost();
+
+    console.log(`Clicked cell at position ${event.currentTarget.dataset.position}!`)
+
+    event.currentTarget.classList.add("shown");
+    event.currentTarget.removeEventListener("click", onCellLeftClick);
+    event.currentTarget.removeEventListener("contextmenu", onCellRightClick);
+}
+
+function onCellRightClick(event) {
+    let numMines = getCounterValue("num-mines");
+
+    if (!event.currentTarget.matches(".flagged")) {
+        if (numMines === 0) return;
+        event.currentTarget.classList.add("flagged");
+        event.currentTarget.innerText = "🚩";
+        setCounterValue("num-mines", numMines - 1);
+    } // if
+    else {
+        event.currentTarget.classList.remove("flagged");
+        event.currentTarget.innerText = "";
+        setCounterValue("num-mines", numMines + 1);
+    } // else
+}
+
+
+
+/**
+ * UTILS
+ */
+
+const setCounterValue = (counterId, intValue) => $("#" + counterId)[0].innerText = intValue.toString().padStart(3, "0");
+const getCounterValue = (counterId) => parseInt($("#" + counterId)[0]?.innerText);
 
 
 
@@ -75,14 +114,29 @@ function startNewGame() {
     $(".game-board table")[0].replaceChildren();    
     for (let r = 0; r < level.rows; r++) {
         let row = document.createElement("tr");
-        for (let c = 0; c < level.cols; c++) row.appendChild(document.createElement("td"));
+
+        for (let c = 0; c < level.cols; c++) {
+            let col = document.createElement("td");
+            col.setAttribute("data-position", r * level.cols + c);
+            col.addEventListener("click", onCellLeftClick);
+            col.addEventListener("contextmenu", onCellRightClick);
+            row.appendChild(col);
+        } // for
+        
         $(".game-board table")[0].appendChild(row);
     } // for
     
-    isMine = Array.from({length: level.rows}, () => Array(level.cols).fill(false));
+    minePositions = [];
     for (let i = 0; i < level.mines; i++) {
-        let position = Math.floor(Math.random() * ((level.rows * level.cols) - i));
-        while (isMine[Math.floor(position / level.cols)][position % level.cols]) position++;
-        isMine[Math.floor(position / level.cols)][position % level.cols] = true;
+        let position = Math.floor(Math.random() * (level.rows * level.cols - i));
+        while (minePositions.includes(position)) position++;
+        minePositions.push(position);
     } // for
+
+    setCounterValue("num-mines", level.mines);
+    setCounterValue("num-seconds", 0);
+}
+
+function gameLost() {
+    console.log("Game lost :(");
 }
