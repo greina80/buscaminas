@@ -69,19 +69,10 @@ function onCellLeftClick(event) {
 }
 
 function onCellRightClick(event) {
-    let numMines = getCounterValue("num-mines");
+    if (!event.currentTarget.matches(".flagged") && getCounterValue("num-mines") === 0) return;
 
-    if (!event.currentTarget.matches(".flagged")) {
-        if (numMines === 0) return;
-        event.currentTarget.classList.add("flagged");
-        event.currentTarget.innerText = "🚩";
-        setCounterValue("num-mines", numMines - 1);
-    } // if
-    else {
-        event.currentTarget.classList.remove("flagged");
-        event.currentTarget.innerText = "";
-        setCounterValue("num-mines", numMines + 1);
-    } // else
+    event.currentTarget.classList.toggle("flagged");
+    setCounterValue("num-mines", LEVEL[currentLevel].mines - $(".game-board td.flagged").length);    
 }
 
 

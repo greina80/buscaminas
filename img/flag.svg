@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 9"> 
+	<line x1="4.5" y1="0.5" x2="4.5" y2="8" stroke="black" stroke-linecap="round"/>
+	<polygon points="0.5,2.5 4.5,0.5 4.5,4" stroke="red" stroke-linejoin="round" fill="red"/>
+	<path d="M 2,9 C 2,7 7,7 7,9" stroke="black"/>
+</svg>

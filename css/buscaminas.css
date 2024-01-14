@@ -45,12 +45,15 @@ body {
 }
 
 .window .title-bar {
-    padding: 0 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
     line-height: 2rem;
     background: linear-gradient(#3593FF 0%, #0055E5 20%, #0055E5 80%, darkblue 100%);
     color: white;
     font-weight: bold; 
-    text-shadow: 1px 1px 1px darkblue;
+    text-shadow: 1px 1px 1px darkblue;    
 }
 
 .window .title-bar img {
@@ -189,6 +192,7 @@ body {
     background-color: black;
     color: red;
     position: relative;
+    height: 2rem;
     display: flex;
     align-items: center;
 }
@@ -210,19 +214,26 @@ body {
  */
 
 .main-button {
-    border: 1px solid gray;    
+    border: 1px solid gray;
+    background-color: gray;
     height: 2rem;
     width: 2rem;
+    overflow: hidden;
 }
 
 .main-button button {
-    background-color: unset;    
-    font-size: 1.1rem;
-    line-height: 1rem;
+    background-color: #C0C0C0;    
     border: 3px solid;
     border-color: var(--border-out-colors);
     height: 100%;
     width: 100%;
+    padding: 0.15rem;
+}
+
+.main-button button:active {
+    border-color: var(--border-in-colors);
+    position: relative;
+    top: 1px;
 }
 
 
@@ -248,4 +259,8 @@ body {
     min-width: 1rem;
     font-size: 0.7rem;
     text-align: center;
+}
+
+.game-board td.flagged {
+    background: no-repeat center/80% url(../img/flag.svg);
 }
