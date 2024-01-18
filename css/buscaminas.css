@@ -25,8 +25,9 @@
 body {
     display: grid;
     place-content: center;
-    height: 100vh;
-    background: linear-gradient(white, gray);  
+    height: 100vh;    
+    /*background: linear-gradient(white, gray);*/
+    background-color: teal;
 }
 
 
@@ -138,15 +139,13 @@ body {
     visibility: hidden;
 }
 
-.submenu svg {
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-left: var(--submenu-column-gap);
-    display: block;
+.submenu tr.selected td.tick {
+    width: 1rem;
+    background: no-repeat center/0.5rem url("../img/tick-black.svg");
 }
 
-.submenu tr:not(.selected) svg {
-    display: none;
+.submenu tr.selected:hover td.tick {
+    background-image: url("../img/tick-white.svg");
 }
 
 .submenu tr:not(.separator) td {
@@ -156,7 +155,6 @@ body {
 .submenu tr:not(.separator):hover {
     background-color: var(--hover-color);
     color: white;
-    fill: white;
 }
 
 .submenu .separator hr {
@@ -172,6 +170,8 @@ body {
  */
 
 .scoreboard {
+    --scoreboard-height: 2rem;
+
     border: 3px solid;
     border-color: var(--border-in-colors);
     margin: 0.5rem;
@@ -192,14 +192,14 @@ body {
     background-color: black;
     color: red;
     position: relative;
-    height: 2rem;
+    height: var(--scoreboard-height);
     display: flex;
     align-items: center;
 }
 
 .counter span {
     font-family: 'seven-segments', sans-serif;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
 }
 
 .counter .placeholder {
@@ -216,8 +216,8 @@ body {
 .main-button {
     border: 1px solid gray;
     background-color: gray;
-    height: 2rem;
-    width: 2rem;
+    height: var(--scoreboard-height);
+    width: var(--scoreboard-height);
     overflow: hidden;
 }
 
