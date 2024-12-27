@@ -224,6 +224,7 @@ table {
 
 .scoreboard .main-button button.surprise { background-image: url('../img/face-surprise.svg'); }
 .scoreboard .main-button button.looser   { background-image: url('../img/face-looser.svg'  ); }
+.scoreboard .main-button button.winner   { background-image: url('../img/face-winner.svg'  ); }
 
 
 /**************/
@@ -242,8 +243,8 @@ table {
     width: 16px;
     height: 16px;
     text-align: center;
-    font-family: "Arial Black", Gadget, sans-serif;
     line-height: .9rem;
+    font-weight: 900;
 }
 
 .game-board table td.flag       { background: no-repeat center / 80% url('../img/flag.svg'      ); }

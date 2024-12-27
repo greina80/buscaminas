@@ -28,6 +28,7 @@ const LEVEL_LIST = [
 
 let currentLevel = -1;
 let timer = null;
+let start = null;
 
 
 
@@ -86,8 +87,10 @@ function onCellRightClick(event) {
 
 function onCellLeftClick(event) {
     $(".scoreboard .main-button button")[0].classList.remove("surprise");
+    if (event.currentTarget.matches(".flag")) return;
     if (event.currentTarget.matches(".mine")) return gameLost(event.currentTarget);
     showCell(parseInt(event.currentTarget.dataset.row), parseInt(event.currentTarget.dataset.col));
+    if ($(".game-board table td:not(.show)").length === level().mines) gameWon();
 }
 
 
@@ -121,6 +124,9 @@ function setLevel(newLevel) {
 }
 
 function newGame() {
+    clearInterval(timer);
+    timer = null;
+
     setCounterValue("num-mines", level().mines);
     setCounterValue("num-seconds", 0);
     $(".scoreboard .main-button button")[0].className = "";
@@ -171,7 +177,10 @@ function showCell(row, col) {
     } // if
     else cell.classList.add("n" + minesAround);
 
-    // if (!timer) 
+    if (!timer) {
+        start = Date.now();
+        timer = setInterval(() => setCounterValue("num-seconds", Math.floor((Date.now() - start) / 1000)), 50);
+    } // if
 }
 
 function gameLost(lastCell) {
@@ -179,4 +188,23 @@ function gameLost(lastCell) {
     $(".game-board table td.mine:not(.flag)").forEach(cell => cell.classList.add("show"));
     $(".game-board table td.flag:not(.mine)").forEach(cell => cell.classList.add("show", "wrong-flag"));
     lastCell.classList.add("exploded");
+    endGame();
+}
+
+function gameWon() {
+    $(".scoreboard .main-button button")[0].classList.add("winner");
+    $(".game-board table td.mine:not(.flag)").forEach(cell => cell.classList.add("flag"));
+    setCounterValue("num-mines", 0);
+    endGame();
+}
+
+function endGame() {
+    clearInterval(timer);
+    timer = null;
+    
+    $(".game-board table td:not(.show)").forEach(cell => {
+        cell.removeEventListener("mousedown", onCellMouseDown);
+        cell.removeEventListener("contextmenu", onCellRightClick);
+        cell.removeEventListener("click", onCellLeftClick);
+    });
 }
