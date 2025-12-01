@@ -25,9 +25,9 @@
 
 
 
-/**************/
-/* TAG STYLES */
-/**************/
+/*********************/
+/* GLOBAL TAG STYLES */
+/*********************/
 
 body {
     display: grid;
@@ -56,9 +56,9 @@ table {
     min-width: fit-content;
 }
 
-/* WINDOW > HEADER */
+/* WINDOW HEADER */
 
-.window .header {
+.window > .header {
     background: linear-gradient(#3593FF 0%, #0055E5 20%, #0055E5 80%, darkblue 100%);
     padding: 0.5rem;
     display: flex;
@@ -69,7 +69,7 @@ table {
     text-shadow: 1px 1px 1px darkblue;  
 }
 
-.window .header::before {
+.window > .header::before {
     content: url('../img/mine.svg');
     width: 1rem;
     height: 1rem;
@@ -86,31 +86,29 @@ table {
     border-bottom: 4px solid white;
 }
 
-/* MENU > ITEM */
+/* MENU ITEM */
 
-.menu .item {
+.menu > .item {
     --menu-hover-color: white;
     --menu-hover-bg-color: #316AC5;
 
     display: inline-block;
 }
 
-/* MENU > ITEM > SPAN */
-
-.menu .item > span {
+.menu > .item > .label {
     display: inline-block;
     padding: 0.25rem 0.75rem;
 }
 
-.menu .item > span:hover,
-.menu .item.expanded > span {
+.menu > .item > .label:hover,
+.menu > .item.expanded > .label {
     color: var(--menu-hover-color);
     background-color: var(--menu-hover-bg-color);
 }
 
-/* MENU > SUBMENU */
+/* SUBMENU */
 
-.menu .submenu {
+.menu > .item > .submenu {
     --submenu-line-width: 1px;
     --submenu-line-color: gray;
     --submenu-items-margin: 2px;
@@ -128,39 +126,41 @@ table {
     transform: translateY(-1rem);
 }
 
-.menu .item.expanded > .submenu {
+.menu > .item.expanded > .submenu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0rem);
 }
 
-/* MENU > SUBMENU > ITEM */
+/* SUBMENU ITEM */
 
-.menu .submenu tr:not(.separator):hover {
+.menu .submenu .item td {
+    padding: 0.2rem 0.5rem 0.2rem 0;
+}
+
+.menu .submenu .item:hover {
     color: var(--menu-hover-color);
     background-color: var(--menu-hover-bg-color);
 }
 
-.menu .submenu tr.separator hr {
+/* SUBMENU SEPARATOR */
+
+.menu .submenu .separator hr {
     height: var(--submenu-line-width);
     margin: var(--submenu-items-margin) 0;
     background-color: var(--submenu-line-color);
 }
 
-.menu .submenu tr:not(.separator) td {
-    padding: 0.2rem 0.5rem 0.2rem 0;
-}
+/* SUBMENU ITEM SELECTABLE */
 
-/* MENU > SUBMENU > ITEM LEVEL */
-
-.menu .submenu tr.level.selected td:first-child {
+.menu .submenu .item.selectable.selected > td:first-child {
     width: 1rem;
     background: no-repeat center / .6rem;
-    background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='0,2 2,4 6,0 6,2 2,6 0,4'/%3E%3C/svg%3E");
+    background-image: url('../img/check-black.svg');
 }
 
-.menu .submenu tr.level.selected:hover td:first-child {
-    background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg' fill='white'%3E%3Cpolygon points='0,2 2,4 6,0 6,2 2,6 0,4'/%3E%3C/svg%3E");
+.menu .submenu .item.selectable.selected:hover > td:first-child {
+    background-image: url('../img/check-white.svg');
 }
 
 
@@ -205,7 +205,6 @@ table {
 .scoreboard .main-button {
     border: 1px solid gray;
     background-color: gray;
-    overflow: hidden;    
 }
 
 .scoreboard .main-button button {
@@ -240,7 +239,7 @@ table {
 .game-board table td {
     border: 3px solid;
     border-color: white gray gray white;
-    width: 16px;
+    min-width: 16px;
     height: 16px;
     text-align: center;
     line-height: .9rem;

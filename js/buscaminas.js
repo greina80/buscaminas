@@ -52,9 +52,9 @@ const isMine          = (row, col)            => !!cellAt(row, col)?.matches(".m
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("contextmenu", (event) => event.preventDefault());
     document.addEventListener("keydown", (event) => event.key === "F2" && newGame());
-    document.addEventListener("click", () => $(".menu .item.expanded")[0]?.classList.remove("expanded"));
+    document.addEventListener("click", () => $(".menu > .item.expanded")[0]?.classList.remove("expanded"));
 
-    $(".menu .item").forEach(menuItem => {
+    $(".menu > .item").forEach(menuItem => {
         menuItem.addEventListener("click", onMenuItemClick);        
         menuItem.addEventListener("mouseenter", onMenuItemMouseEnter); 
     });
@@ -64,13 +64,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function onMenuItemClick(event) {
     if (event.currentTarget.matches(".expanded")) return;
-    $(".menu .item.expanded")[0]?.classList.remove("expanded");
+    $(".menu > .item.expanded")[0]?.classList.remove("expanded");
     event.currentTarget.classList.add("expanded");
     event.stopPropagation();
 }
 
 function onMenuItemMouseEnter(event) {
-    if ($(".menu .item.expanded").length && !event.currentTarget.matches(".expanded")) onMenuItemClick(event);
+    if ($(".menu > .item.expanded").length && !event.currentTarget.matches(".expanded")) onMenuItemClick(event);
 }
 
 function onCellMouseDown(event) {
@@ -102,8 +102,8 @@ function onCellLeftClick(event) {
 function setLevel(newLevel) {
     if (newLevel === currentLevel) return;
 
-    $(".menu .submenu tr.level")[currentLevel]?.classList.remove("selected");
-    $(".menu .submenu tr.level")[newLevel].classList.add("selected");
+    $(`.menu #level-${currentLevel}`)[0]?.classList.remove("selected");
+    $(`.menu #level-${newLevel}`)[0].classList.add("selected");
     currentLevel = newLevel;
 
     $(".game-board table")[0].replaceChildren();

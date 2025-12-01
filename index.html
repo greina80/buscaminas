@@ -13,9 +13,9 @@
             <div class="content">
                 <div class="menu">
                     <div class="item">
-                        <span>Juego</span>
+                        <span class="label">Juego</span>
                         <table class="submenu">
-                            <tr onclick="newGame()">
+                            <tr class="item" onclick="newGame()">
                                 <td></td>
                                 <td>Nuevo</td>
                                 <td>F2</td>
@@ -23,17 +23,17 @@
                             <tr class="separator">
                                 <td colspan="3"><hr/></td>
                             </tr>
-                            <tr class="level" onclick="setLevel(0)">
+                            <tr class="item selectable" id="level-0" onclick="setLevel(0)">
                                 <td></td>
                                 <td>Principiante</td>
                                 <td></td>
                             </tr>
-                            <tr class="level" onclick="setLevel(1)">
+                            <tr class="item selectable" id="level-1" onclick="setLevel(1)">
                                 <td></td>
                                 <td>Intermedio</td>
                                 <td></td>
                             </tr>
-                            <tr class="level" onclick="setLevel(2)">
+                            <tr class="item selectable" id="level-2" onclick="setLevel(2)">
                                 <td></td>
                                 <td>Experto</td>
                                 <td></td>
