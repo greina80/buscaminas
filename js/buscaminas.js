@@ -1,7 +1,8 @@
 /**
- * LEVELS
+ * GLOBAL UTILS
  */
 
+// GAME LEVELS:
 const LEVEL_LIST = [
     {
         rows: 9,
@@ -20,47 +21,47 @@ const LEVEL_LIST = [
     }
 ];
 
-
-
-/**
- * GLOBAL VARIABLES
- */
-
+// VARIABLES:
 let currentLevel = -1;
 let timer = null;
 let start = null;
 
-
-
-/**
- * UTILS
- */
-
-const $               = document.querySelectorAll.bind(document);
-const level           = ()                    => LEVEL_LIST[currentLevel];
-const setCounterValue = (counterId, intValue) => $("#" + counterId)[0].innerText = intValue.toString().padStart(3, "0");
-const getCounterValue = (counterId)           => parseInt($("#" + counterId)[0]?.innerText);
-const cellAt          = (row, col)            => $(`.game-board table td[data-row="${row}"][data-col="${col}"]`)[0];
-const isMine          = (row, col)            => !!cellAt(row, col)?.matches(".mine");
+// METHODS:
+const $ = document.querySelectorAll.bind(document);
+const level = () => LEVEL_LIST[currentLevel];
 
 
 
 /**
- * DOM EVENTS
+ * GLOBAL EVENT HANDLERS
  */
 
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("contextmenu", (event) => event.preventDefault());
     document.addEventListener("keydown", (event) => event.key === "F2" && newGame());
+
+    // Game initialization:
+    setLevel(0);
+});
+
+
+
+/**
+ * MENU COMPONENT
+ */
+
+// INITIALIZATION:
+
+document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("click", () => $(".menu > .item.expanded")[0]?.classList.remove("expanded"));
 
     $(".menu > .item").forEach(menuItem => {
         menuItem.addEventListener("click", onMenuItemClick);        
         menuItem.addEventListener("mouseenter", onMenuItemMouseEnter); 
     });
-
-    setLevel(0);
 });
+
+// EVENT HANDLERS:
 
 function onMenuItemClick(event) {
     if (event.currentTarget.matches(".expanded")) return;
@@ -73,25 +74,49 @@ function onMenuItemMouseEnter(event) {
     if ($(".menu > .item.expanded").length && !event.currentTarget.matches(".expanded")) onMenuItemClick(event);
 }
 
+
+
+/**
+ * SCORE BOARD COMPONENT
+ */
+
+// UTILS:
+
+const setCounterValue = (counterId, intValue) => $("#" + counterId)[0].innerText = intValue.toString().padStart(3, "0");
+const getCounterValue = (counterId)           => parseInt($("#" + counterId)[0]?.innerText);
+
+
+
+/**
+ * GAME BOARD COMPONENT
+ */
+
+// EVENT HANDLERS:
+
 function onCellMouseDown(event) {
     if (event.button !== 0) return;
-    if (event.currentTarget.matches(".flag")) return;
-    $(".scoreboard .main-button button")[0].classList.add("surprise");
+    if (event.currentTarget.matches(".flagged")) return;
+    $("#main-button")[0].classList.add("surprise");
 }
 
 function onCellRightClick(event) {
-    if (!event.currentTarget.matches(".flag") && getCounterValue("num-mines") === 0) return;
-    event.currentTarget.classList.toggle("flag");
-    setCounterValue("num-mines", level().mines - $(".game-board table td.flag").length);
+    if (!event.currentTarget.matches(".flagged") && getCounterValue("num-mines") === 0) return;
+    event.currentTarget.classList.toggle("flagged");
+    setCounterValue("num-mines", level().mines - $(".game-board .cell.flagged").length);
 }
 
 function onCellLeftClick(event) {
-    $(".scoreboard .main-button button")[0].classList.remove("surprise");
-    if (event.currentTarget.matches(".flag")) return;
+    $("#main-button")[0].classList.remove("surprise");
+    if (event.currentTarget.matches(".flagged")) return;
     if (event.currentTarget.matches(".mine")) return gameLost(event.currentTarget);
     showCell(parseInt(event.currentTarget.dataset.row), parseInt(event.currentTarget.dataset.col));
-    if ($(".game-board table td:not(.show)").length === level().mines) gameWon();
+    if ($(".game-board .cell:not(.shown)").length === level().mines) gameWon();
 }
+
+// UTILS:
+
+const cellAt = (row, col) => $(`.game-board .cell[data-row="${row}"][data-col="${col}"]`)[0];
+const isMine = (row, col) => cellAt(row, col)?.matches(".mine");
 
 
 
@@ -102,8 +127,8 @@ function onCellLeftClick(event) {
 function setLevel(newLevel) {
     if (newLevel === currentLevel) return;
 
-    $(`.menu #level-${currentLevel}`)[0]?.classList.remove("selected");
-    $(`.menu #level-${newLevel}`)[0].classList.add("selected");
+    $(`#menuItemLevel${currentLevel}`)[0]?.classList.remove("selected");
+    $(`#menuItemLevel${newLevel}`)[0].classList.add("selected");
     currentLevel = newLevel;
 
     $(".game-board table")[0].replaceChildren();
@@ -129,7 +154,7 @@ function newGame() {
 
     setCounterValue("num-mines", level().mines);
     setCounterValue("num-seconds", 0);
-    $(".scoreboard .main-button button")[0].className = "";
+    $("#main-button")[0].className = "";
 
     let minePositions = [];
     for (let i = 0; i < level().mines; i++) {
@@ -142,15 +167,15 @@ function newGame() {
         cell.addEventListener("mousedown", onCellMouseDown);
         cell.addEventListener("contextmenu", onCellRightClick);
         cell.addEventListener("click", onCellLeftClick);
-        cell.className = minePositions.includes(index) ? "mine" : "";
+        cell.className = "cell" + (minePositions.includes(index) ? " mine" : "");
     });
 }
 
 function showCell(row, col) {
     let cell = cellAt(row, col);
-    if (!cell || cell.matches(".show") || cell.matches(".flag")) return;
+    if (!cell || cell.matches(".shown") || cell.matches(".flagged")) return;
 
-    cell.classList.add("show");
+    cell.classList.add("shown");
     cell.removeEventListener("mousedown", onCellMouseDown);
     cell.removeEventListener("contextmenu", onCellRightClick);
     cell.removeEventListener("click", onCellLeftClick);
@@ -184,16 +209,16 @@ function showCell(row, col) {
 }
 
 function gameLost(lastCell) {
-    $(".scoreboard .main-button button")[0].classList.add("looser");
-    $(".game-board table td.mine:not(.flag)").forEach(cell => cell.classList.add("show"));
-    $(".game-board table td.flag:not(.mine)").forEach(cell => cell.classList.add("show", "wrong-flag"));
+    $("#main-button")[0].classList.add("looser");
+    $(".game-board .cell.mine:not(.flagged)").forEach(cell => cell.classList.add("shown"));
+    $(".game-board .cell.flagged:not(.mine)").forEach(cell => cell.classList.add("shown", "error"));
     lastCell.classList.add("exploded");
     endGame();
 }
 
 function gameWon() {
-    $(".scoreboard .main-button button")[0].classList.add("winner");
-    $(".game-board table td.mine:not(.flag)").forEach(cell => cell.classList.add("flag"));
+    $("#main-button")[0].classList.add("winner");
+    $(".game-board .cell.mine:not(.flagged)").forEach(cell => cell.classList.add("flagged"));
     setCounterValue("num-mines", 0);
     endGame();
 }
@@ -202,7 +227,7 @@ function endGame() {
     clearInterval(timer);
     timer = null;
     
-    $(".game-board table td:not(.show)").forEach(cell => {
+    $(".game-board .cell:not(.shown)").forEach(cell => {
         cell.removeEventListener("mousedown", onCellMouseDown);
         cell.removeEventListener("contextmenu", onCellRightClick);
         cell.removeEventListener("click", onCellLeftClick);

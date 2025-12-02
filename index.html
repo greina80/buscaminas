@@ -23,17 +23,17 @@
                             <tr class="separator">
                                 <td colspan="3"><hr/></td>
                             </tr>
-                            <tr class="item selectable" id="level-0" onclick="setLevel(0)">
+                            <tr class="item selectable" id="menuItemLevel0" onclick="setLevel(0)">
                                 <td></td>
                                 <td>Principiante</td>
                                 <td></td>
                             </tr>
-                            <tr class="item selectable" id="level-1" onclick="setLevel(1)">
+                            <tr class="item selectable" id="menuItemLevel1" onclick="setLevel(1)">
                                 <td></td>
                                 <td>Intermedio</td>
                                 <td></td>
                             </tr>
-                            <tr class="item selectable" id="level-2" onclick="setLevel(2)">
+                            <tr class="item selectable" id="menuItemLevel2" onclick="setLevel(2)">
                                 <td></td>
                                 <td>Experto</td>
                                 <td></td>
@@ -43,14 +43,14 @@
                 </div>
                 <div class="scoreboard">
                     <div class="counter">
-                        <span id="num-mines">000</span>
+                        <span class="value" id="num-mines">000</span>
                         <span class="placeholder">888</span>
                     </div>
-                    <div class="main-button">
+                    <div id="main-button">
                         <button onclick="newGame()"></button>
                     </div>
                     <div class="counter">
-                        <span id="num-seconds">000</span>
+                        <span class="value" id="num-seconds">000</span>
                         <span class="placeholder">888</span>
                     </div>
                 </div>
