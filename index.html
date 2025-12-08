@@ -8,50 +8,45 @@
         <script src="./js/buscaminas.js" type="text/javascript"></script>        
     </head>
     <body>
-        <div class="window">
+        <div class="main window">
             <div class="header">
                 <img class="icon" src="./img/mine.svg"/>
                 <span class="title">Buscaminas</span>
             </div>
-            <div class="content">
-                <div class="menu">
-                    <div class="item">
-                        <span class="label">Juego</span>
-                        <table class="submenu">
-                            <tr class="item" onclick="newGame()">
-                                <td></td>
-                                <td>Nuevo</td>
-                                <td>F2</td>
-                            </tr>
-                            <tr class="separator">
-                                <td colspan="3"><hr/></td>
-                            </tr>
-                            <tr id="levelMenuItems"></tr>
-                        </table>
+            <div class="menu">
+                <div class="item">
+                    <span class="label">Juego</span>
+                    <div class="submenu">
+                        <div class="item">
+                            <div class="check"></div>
+                            <div class="label">Nuevo</div>
+                            <div class="hotkey">F2</div>
+                        </div>
+                        <div class="separator"></div>
+                        <slot id="levelMenuItems"></slot>
                     </div>
                 </div>
+            </div>
+            <div class="content">
                 <div class="scoreboard">
                     <div class="counter">
                         <span class="value" id="num-mines">000</span>
                         <span class="placeholder">888</span>
                     </div>
-                    <div id="main-button">
-                        <button onclick="newGame()"></button>
-                    </div>
+                    <div class="main-button" onclick="newGame()"></div>
                     <div class="counter">
                         <span class="value" id="num-seconds">000</span>
                         <span class="placeholder">888</span>
                     </div>
                 </div>
-                <div class="game-board">
-                    <table></table>
-                </div>
+                <table class="game-board"></table>
             </div>
         </div>
         <dialog class="window" id="newRecordDialog">
             <div class="header">
-                <img class="icon" src="./img/trophy.svg"/>
+                <img class="icon" src="./img/trophy.svg" />
                 <span class="title">¡Nuevo récord!</span>
+                <div class="close-button"></div>
             </div>
             <div class="content">
                 <div class="main-panel">

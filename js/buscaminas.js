@@ -9,7 +9,7 @@ const LEVELS = [
         description: "Principiante",
         rows: 9,
         cols: 9,
-        mines: 1
+        mines: 1 /* 10 */
     },
     {
         id: 2,
@@ -29,11 +29,13 @@ const LEVELS = [
 
 // VARIABLES:
 let currentLevel = null;
+let minePositions = [];
 let timer = null;
 let start = null;
 
 // METHODS:
-const $ = document.querySelectorAll.bind(document);
+const get = document.querySelector.bind(document);
+const getAll = document.querySelectorAll.bind(document);
 
 
 
@@ -59,36 +61,35 @@ document.addEventListener("DOMContentLoaded", function() {
 // INITIALIZATION:
 
 function initializeMenu() {
-    document.addEventListener("click", () => $(".menu > .item.expanded")[0]?.classList.remove("expanded"));
+    document.addEventListener("click", () => get(".menu > .item.expanded")?.classList.remove("expanded"));
 
-    $(".menu > .item").forEach(menuItem => {
+    getAll(".menu > .item").forEach(menuItem => {
         menuItem.addEventListener("click", onMenuItemClick);        
         menuItem.addEventListener("mouseenter", onMenuItemMouseEnter); 
     });
 
     // Adding level menu items:
-    let levelMenuItems = $("#levelMenuItems")[0];
-    LEVELS.forEach(level => levelMenuItems.insertAdjacentHTML("beforebegin", `
-        <tr class="item selectable" id="menuItemLevel${level.id}" onclick="setLevel(${level.id})">
-            <td></td>
-            <td>${level.description}</td>
-            <td></td>
-        </tr>
-    `));
-    levelMenuItems.remove();
+    let levelMenuItems = get("#levelMenuItems");
+    LEVELS.forEach(level => levelMenuItems.innerHTML += `
+        <div class="item" id="menuItemLevel${level.id}" onclick="setLevel(${level.id})">
+            <div class="check"></div>
+            <div class="label">${level.description}</div>
+            <div class="hotkey"></div>
+        </div>
+    `);
 };
 
 // EVENT HANDLERS:
 
 function onMenuItemClick(event) {
     if (event.currentTarget.matches(".expanded")) return;
-    $(".menu > .item.expanded")[0]?.classList.remove("expanded");
+    get(".menu > .item.expanded")?.classList.remove("expanded");
     event.currentTarget.classList.add("expanded");
     event.stopPropagation();
 }
 
 function onMenuItemMouseEnter(event) {
-    if ($(".menu > .item.expanded").length && !event.currentTarget.matches(".expanded")) onMenuItemClick(event);
+    if (get(".menu > .item.expanded") && !event.currentTarget.matches(".expanded")) onMenuItemClick(event);
 }
 
 
@@ -99,8 +100,8 @@ function onMenuItemMouseEnter(event) {
 
 // UTILS:
 
-const setCounterValue = (counterId, intValue) => $("#" + counterId)[0].innerText = intValue.toString().padStart(3, "0");
-const getCounterValue = (counterId)           => parseInt($("#" + counterId)[0]?.innerText);
+const setCounterValue = (counterId, intValue) => get("#" + counterId).innerText = intValue.toString().padStart(3, "0");
+const getCounterValue = (counterId)           => parseInt(get("#" + counterId).innerText);
 
 
 
@@ -113,27 +114,27 @@ const getCounterValue = (counterId)           => parseInt($("#" + counterId)[0]?
 function onCellMouseDown(event) {
     if (event.button !== 0) return;
     if (event.currentTarget.matches(".flagged")) return;
-    $("#main-button")[0].classList.add("surprise");
+    get(".main-button").classList.add("surprise");
 }
 
 function onCellRightClick(event) {
     if (!event.currentTarget.matches(".flagged") && getCounterValue("num-mines") === 0) return;
     event.currentTarget.classList.toggle("flagged");
-    setCounterValue("num-mines", currentLevel.mines - $(".game-board .cell.flagged").length);
+    setCounterValue("num-mines", currentLevel.mines - getAll(".game-board .flagged").length);
 }
 
 function onCellLeftClick(event) {
-    $("#main-button")[0].classList.remove("surprise");
+    get(".main-button").classList.remove("surprise");
     if (event.currentTarget.matches(".flagged")) return;
-    if (event.currentTarget.matches(".mine")) return gameLost(event.currentTarget);
+    if (isMine(event.currentTarget.dataset.row, event.currentTarget.dataset.col)) return gameLost(event.currentTarget);
     showCell(parseInt(event.currentTarget.dataset.row), parseInt(event.currentTarget.dataset.col));
-    if ($(".game-board .cell:not(.shown)").length === currentLevel.mines) gameWon();
+    if (getAll(".game-board td:not(.shown)").length === currentLevel.mines) gameWon();
 }
 
 // UTILS:
 
-const cellAt = (row, col) => $(`.game-board .cell[data-row="${row}"][data-col="${col}"]`)[0];
-const isMine = (row, col) => cellAt(row, col)?.matches(".mine");
+const cellAt = (row, col) => get(`.game-board td[data-row="${row}"][data-col="${col}"]`);
+const isMine = (row, col) => cellAt(row, col) && minePositions.includes(currentLevel.cols * parseInt(row) + parseInt(col));
 
 
 
@@ -144,11 +145,12 @@ const isMine = (row, col) => cellAt(row, col)?.matches(".mine");
 function setLevel(newLevelId) {
     if (newLevelId === currentLevel?.id) return;
 
-    $("#menuItemLevel" + currentLevel?.id)[0]?.classList.remove("selected");
-    $("#menuItemLevel" + newLevelId)[0].classList.add("selected");
+    get("#menuItemLevel" + currentLevel?.id)?.classList.remove("selected");
+    get("#menuItemLevel" + newLevelId).classList.add("selected");
     currentLevel = LEVELS.find(level => level.id === newLevelId);
 
-    $(".game-board table")[0].replaceChildren();
+    let gameBoard = get(".game-board");
+    gameBoard.replaceChildren();
     for (let r = 0; r < currentLevel.rows; r++) {
         let row = document.createElement("tr");
 
@@ -159,7 +161,7 @@ function setLevel(newLevelId) {
             row.appendChild(cell);
         } // for
 
-        $(".game-board table")[0].appendChild(row);
+        gameBoard.appendChild(row);
     } // for
 
     newGame();
@@ -171,20 +173,20 @@ function newGame() {
 
     setCounterValue("num-mines", currentLevel.mines);
     setCounterValue("num-seconds", 0);
-    $("#main-button")[0].className = "";
+    get(".main-button").className = "main-button";
 
-    let minePositions = [];
+    minePositions = [];
     for (let i = 0; i < currentLevel.mines; i++) {
         let position = Math.floor(Math.random() * (currentLevel.rows * currentLevel.cols - i));
         while (minePositions.includes(position)) position++;
         minePositions.push(position);
     } // for
     
-    $(".game-board table td").forEach((cell, index) => {
+    getAll(".game-board td").forEach(cell => {
+        cell.className = isMine(cell.dataset.row, cell.dataset.col) ? "test" : "";
         cell.addEventListener("mousedown", onCellMouseDown);
         cell.addEventListener("contextmenu", onCellRightClick);
         cell.addEventListener("click", onCellLeftClick);
-        cell.className = "cell" + (minePositions.includes(index) ? " mine" : "");
     });
 }
 
@@ -226,16 +228,22 @@ function showCell(row, col) {
 }
 
 function gameLost(lastCell) {
-    $("#main-button")[0].classList.add("looser");
-    $(".game-board .cell.mine:not(.flagged)").forEach(cell => cell.classList.add("shown"));
-    $(".game-board .cell.flagged:not(.mine)").forEach(cell => cell.classList.add("shown", "error"));
+    get(".main-button").classList.add("looser");
+
+    // Revealing hidden mines:
+    getAll(".game-board td:not(.shown)").forEach(cell => {
+        let _isMine = isMine(cell.dataset.row, cell.dataset.col);
+        if (_isMine && !cell.matches(".flagged")) cell.classList.add("shown", "mine");
+        else if (!_isMine && cell.matches(".flagged")) cell.classList.add("shown", "error");
+    });
+
     lastCell.classList.add("exploded");
     endGame();
 }
 
 function gameWon() {
-    $("#main-button")[0].classList.add("winner");
-    $(".game-board .cell.mine:not(.flagged)").forEach(cell => cell.classList.add("flagged"));
+    get(".main-button").classList.add("winner");
+    getAll(".game-board td:not(.shown)").forEach(cell => cell.classList.add("flagged"));
     setCounterValue("num-mines", 0);
     endGame();
     checkNewRecord();
@@ -245,7 +253,7 @@ function endGame() {
     clearInterval(timer);
     timer = null;
     
-    $(".game-board .cell:not(.shown)").forEach(cell => {
+    getAll(".game-board td").forEach(cell => {
         cell.removeEventListener("mousedown", onCellMouseDown);
         cell.removeEventListener("contextmenu", onCellRightClick);
         cell.removeEventListener("click", onCellLeftClick);
@@ -257,7 +265,7 @@ function checkNewRecord() {
     let highScores = JSON.parse(localStorage.getItem("high-scores"));
     if (highScores && score >= highScores["level" + currentLevel.id].score) return;
 
-    $("#newRecordLevel")[0].innerText = currentLevel.description;
-    $("#newRecordScore")[0].innerText = score + " segundos";
-    $("#newRecordDialog")[0].showModal();
+    get("#newRecordLevel").innerText = currentLevel.description;
+    get("#newRecordScore").innerText = score + " segundos";
+    get("#newRecordDialog").showModal();
 }
