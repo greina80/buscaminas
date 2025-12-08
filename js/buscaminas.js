@@ -49,6 +49,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Game initialization:
     initializeMenu();
+    initializeScoreboard();
+    initializeModals();
+
     setLevel(1);  
 });
 
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
  * MENU COMPONENT
  */
 
-// INITIALIZATION:
+// INITIALIZER:
 
 function initializeMenu() {
     document.addEventListener("click", () => get(".menu > .item.expanded")?.classList.remove("expanded"));
@@ -98,6 +101,12 @@ function onMenuItemMouseEnter(event) {
  * SCORE BOARD COMPONENT
  */
 
+// INITIALIZER:
+
+function initializeScoreboard() {
+    get(".main-button").addEventListener("click", newGame);
+}
+
 // UTILS:
 
 const setCounterValue = (counterId, intValue) => get("#" + counterId).innerText = intValue.toString().padStart(3, "0");
@@ -135,6 +144,18 @@ function onCellLeftClick(event) {
 
 const cellAt = (row, col) => get(`.game-board td[data-row="${row}"][data-col="${col}"]`);
 const isMine = (row, col) => cellAt(row, col) && minePositions.includes(currentLevel.cols * parseInt(row) + parseInt(col));
+
+
+
+/**
+ * MODAL COMPONENT
+ */
+
+// INITIALIZER:
+
+function initializeModals() {
+    getAll(".modal").forEach(modal => modal.querySelector(".close-button").addEventListener("click", () => modal.classList.remove("shown")));
+}
 
 
 
@@ -267,5 +288,6 @@ function checkNewRecord() {
 
     get("#newRecordLevel").innerText = currentLevel.description;
     get("#newRecordScore").innerText = score + " segundos";
-    get("#newRecordDialog").showModal();
+    get("#newRecordModal").classList.add("shown");
+    get("#newRecordName").focus();
 }

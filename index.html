@@ -33,7 +33,7 @@
                         <span class="value" id="num-mines">000</span>
                         <span class="placeholder">888</span>
                     </div>
-                    <div class="main-button" onclick="newGame()"></div>
+                    <div class="main-button"></div>
                     <div class="counter">
                         <span class="value" id="num-seconds">000</span>
                         <span class="placeholder">888</span>
@@ -42,34 +42,24 @@
                 <table class="game-board"></table>
             </div>
         </div>
-        <dialog class="window" id="newRecordDialog">
-            <div class="header">
-                <img class="icon" src="./img/trophy.svg" />
-                <span class="title">¡Nuevo récord!</span>
-                <div class="close-button"></div>
-            </div>
-            <div class="content">
-                <div class="main-panel">
-                    <img src="./img/party-popper.svg"/>
-                    <table>
-                        <tr>
-                            <td>Nivel:</td>
-                            <td id="newRecordLevel"></td>
-                        </tr>
-                        <tr>
-                            <td>Puntuación:</td>
-                            <td id="newRecordScore"></td>
-                        </tr>
-                        <tr>
-                            <td>Nombre:</td>
-                            <td>
-                                <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20"/>
-                            </td>
-                        </tr>
-                    </table>
+        <div class="modal" id="newRecordModal">
+            <div class="window" id="newRecordModal">
+                <div class="header">
+                    <img class="icon" src="./img/trophy.svg" />
+                    <span class="title">¡Nuevo récord!</span>
+                    <div class="close-button"></div>
                 </div>
-                <button>Aceptar</button>
+                <div class="content">
+                    <img src="./img/party-popper.svg"/>
+                    <div>Nivel:</div>
+                    <div id="newRecordLevel"></div>
+                    <div>Puntuación:</div>
+                    <div id="newRecordScore"></div>
+                    <div>Nombre:</div>
+                    <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20"/>
+                    <button>Aceptar</button>
+                </div>
             </div>
-        </dialog>
+        </div>
     </body>
 </html>
