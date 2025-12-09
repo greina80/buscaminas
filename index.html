@@ -24,6 +24,12 @@
                         </div>
                         <div class="separator"></div>
                         <slot id="levelMenuItems"></slot>
+                        <div class="separator"></div>
+                        <div class="item" onclick="showHighScores()">
+                            <div class="check"></div>
+                            <div class="label">Mejores puntuaciones</div>
+                            <div class="hotkey"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,7 +39,7 @@
                         <span class="value" id="num-mines">000</span>
                         <span class="placeholder">888</span>
                     </div>
-                    <div class="main-button"></div>
+                    <div class="main-button" onclick="newGame()"></div>
                     <div class="counter">
                         <span class="value" id="num-seconds">000</span>
                         <span class="placeholder">888</span>
@@ -43,11 +49,11 @@
             </div>
         </div>
         <div class="modal" id="newRecordModal">
-            <div class="window" id="newRecordModal">
+            <div class="window">
                 <div class="header">
                     <img class="icon" src="./img/trophy.svg" />
                     <span class="title">¡Nuevo récord!</span>
-                    <div class="close-button"></div>
+                    <div class="close-button" onclick="closeModal(this)"></div>
                 </div>
                 <div class="content">
                     <img src="./img/party-popper.svg"/>
@@ -57,7 +63,30 @@
                     <span id="newRecordScore"></span>
                     <span>Nombre:</span>
                     <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20"/>
-                    <button>Aceptar</button>
+                    <button onclick="saveNewRecord()">Aceptar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="highScoresModal">
+            <div class="window">
+                <div class="header">
+                    <img class="icon" src="./img/trophy.svg" />
+                    <span class="title">Mejores puntuaciones</span>
+                    <div class="close-button" onclick="closeModal(this)"></div>
+                </div>
+                <div class="content">
+                    <img src="./img/podium.svg"/>
+                    <table id="highScoresTable">
+                        <thead>
+                            <tr>
+                                <th>Nivel</th>
+                                <th>Puntuación</th>
+                                <th>Jugador</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>

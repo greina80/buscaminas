@@ -49,9 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Game initialization:
     initializeMenu();
-    initializeScoreboard();
-    initializeModals();
-
     setLevel(1);  
 });
 
@@ -101,12 +98,6 @@ function onMenuItemMouseEnter(event) {
  * SCORE BOARD COMPONENT
  */
 
-// INITIALIZER:
-
-function initializeScoreboard() {
-    get(".main-button").addEventListener("click", newGame);
-}
-
 // UTILS:
 
 const setCounterValue = (counterId, intValue) => get("#" + counterId).innerText = intValue.toString().padStart(3, "0");
@@ -151,10 +142,10 @@ const isMine = (row, col) => cellAt(row, col) && minePositions.includes(currentL
  * MODAL COMPONENT
  */
 
-// INITIALIZER:
+// UTILS:
 
-function initializeModals() {
-    getAll(".modal").forEach(modal => modal.querySelector(".close-button").addEventListener("click", () => modal.classList.remove("shown")));
+function closeModal(closeBtn) {
+    closeBtn.closest(".modal").classList.remove("shown");
 }
 
 
@@ -290,4 +281,55 @@ function checkNewRecord() {
     get("#newRecordScore").innerText = score + " segundos";
     get("#newRecordModal").classList.add("shown");
     get("#newRecordName").focus();
+}
+
+function getHighScores() {
+    let highScores = JSON.parse(localStorage.getItem("high-scores"));
+    
+    if (!highScores) {
+        highScores = {};
+        LEVELS.forEach(level => {
+            highScores["level" + level.id] = {
+                levelName: level.description,
+                date: "00/00/0000",
+                gamerName: "Anónimo",
+                score: 0
+            };
+        });
+    } // if
+
+    return highScores;
+}
+
+function saveNewRecord() {
+    let highScores = getHighScores();
+
+    highScores["level" + currentLevel.id] = {
+        levelName: currentLevel.description,
+        date: (new Date()).toLocaleDateString(),
+        gamerName: get("#newRecordName").value.trim() || "Anónimo",
+        score: getCounterValue("num-seconds")
+    };
+
+    // localStorage.setItem("high-scores", JSON.stringify(highScores));
+    get("#newRecordModal").classList.remove("shown");
+    showHighScores();
+}
+
+function showHighScores() {
+    let highScoresTbl = get("#highScoresTable tbody");
+    highScoresTbl.replaceChildren();
+
+    Object.values(getHighScores()).forEach(highScore => {
+        highScoresTbl.innerHTML += `
+            <tr>
+                <td>${highScore.levelName}</td>
+                <td>${highScore.score} segundos</td>
+                <td>${highScore.gamerName}</td>
+                <td>${highScore.date}</td>
+            </tr>
+        `;
+    });
+
+    get("#highScoresModal").classList.add("shown");
 }
