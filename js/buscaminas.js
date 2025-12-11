@@ -102,7 +102,7 @@ function initializeMenu() {
 function onMenuItemClick(event) {
     if (event.srcElement.matches(".submenu > .item")) return;
     if (event.currentTarget.matches(".expanded")) return;
-    
+
     get(".menu > .item.expanded")?.classList.remove("expanded");
     event.currentTarget.classList.add("expanded");
     event.stopPropagation();
@@ -255,7 +255,11 @@ function showCell(row, col) {
 
     if (!timer) {
         start = Date.now();
-        timer = setInterval(() => setCounterValue("num-seconds", Math.floor((Date.now() - start) / 1000)), 50);
+        timer = setInterval(() => {
+            let lapsedSeconds = Math.floor((Date.now() - start) / 1000);
+            if (lapsedSeconds < 1000) setCounterValue("num-seconds", lapsedSeconds);
+            else clearInterval(timer);
+        }, 50);
     } // if
 }
 
@@ -292,19 +296,6 @@ function endGame() {
     });
 }
 
-function checkNewRecord() {
-    let score = getCounterValue("num-seconds");
-    let highScores = JSON.parse(localStorage.getItem("high-scores"));
-    if (highScores && 
-        highScores["level" + currentLevel.id].score >= 0 && 
-        highScores["level" + currentLevel.id].score <= score) return;
-
-    get("#newRecordLevel").innerText = currentLevel.description;
-    get("#newRecordScore").innerText = score + " segundos";
-    get("#newRecordModal").classList.add("shown");
-    get("#newRecordName").focus();
-}
-
 function getHighScores() {
     let highScores = JSON.parse(localStorage.getItem("high-scores"));
     
@@ -321,6 +312,17 @@ function getHighScores() {
     } // if
 
     return highScores;
+}
+
+function checkNewRecord() {
+    let score = getCounterValue("num-seconds");
+    let highScore = getHighScores()["level" + currentLevel.id];
+    if (highScore.score >= 0 && highScore.score <= score) return;
+
+    get("#newRecordLevel").innerText = currentLevel.description;
+    get("#newRecordScore").innerText = score + " segundos";
+    get("#newRecordModal").classList.add("shown");
+    get("#newRecordName").focus();
 }
 
 function saveNewRecord() {
