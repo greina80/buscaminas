@@ -9,7 +9,7 @@ const LEVELS = [
         description: "Principiante",
         rows: 9,
         cols: 9,
-        mines: 1 /* 10 */
+        mines: 10
     },
     {
         id: 2,
@@ -45,12 +45,30 @@ const getAll = document.querySelectorAll.bind(document);
 
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("contextmenu", (event) => event.preventDefault());
-    document.addEventListener("keydown", (event) => event.key === "F2" && newGame());
-
+    
     // Game initialization:
+    initializeWindows();
     initializeMenu();
     setLevel(1);  
 });
+
+
+
+/**
+ * WINDOW COMPONENT
+*/
+
+// INITIALIZER:
+
+function initializeWindows() {
+    getAll(".window").forEach(window => {
+        window.setAttribute("tabindex", "-1");
+
+        window.querySelectorAll("[data-hot-key]").forEach(hotkeyedComponent => {
+            window.addEventListener("keyup", (event) => event.key === hotkeyedComponent.dataset.hotKey && hotkeyedComponent.click());
+        });
+    });
+}
 
 
 
@@ -82,7 +100,9 @@ function initializeMenu() {
 // EVENT HANDLERS:
 
 function onMenuItemClick(event) {
+    if (event.srcElement.matches(".submenu > .item")) return;
     if (event.currentTarget.matches(".expanded")) return;
+    
     get(".menu > .item.expanded")?.classList.remove("expanded");
     event.currentTarget.classList.add("expanded");
     event.stopPropagation();
@@ -275,7 +295,9 @@ function endGame() {
 function checkNewRecord() {
     let score = getCounterValue("num-seconds");
     let highScores = JSON.parse(localStorage.getItem("high-scores"));
-    if (highScores && score >= highScores["level" + currentLevel.id].score) return;
+    if (highScores && 
+        highScores["level" + currentLevel.id].score >= 0 && 
+        highScores["level" + currentLevel.id].score <= score) return;
 
     get("#newRecordLevel").innerText = currentLevel.description;
     get("#newRecordScore").innerText = score + " segundos";
@@ -291,9 +313,9 @@ function getHighScores() {
         LEVELS.forEach(level => {
             highScores["level" + level.id] = {
                 levelName: level.description,
-                date: "00/00/0000",
-                gamerName: "Anónimo",
-                score: 0
+                date: "-",
+                gamerName: "-",
+                score: -1
             };
         });
     } // if
@@ -311,7 +333,7 @@ function saveNewRecord() {
         score: getCounterValue("num-seconds")
     };
 
-    // localStorage.setItem("high-scores", JSON.stringify(highScores));
+    localStorage.setItem("high-scores", JSON.stringify(highScores));
     get("#newRecordModal").classList.remove("shown");
     showHighScores();
 }
@@ -324,12 +346,13 @@ function showHighScores() {
         highScoresTbl.innerHTML += `
             <tr>
                 <td>${highScore.levelName}</td>
-                <td>${highScore.score} segundos</td>
-                <td>${highScore.gamerName}</td>
+                <td>${highScore.score < 0 ? "-" : highScore.score + " segundos"} </td>
                 <td>${highScore.date}</td>
+                <td>${highScore.gamerName}</td>
             </tr>
         `;
     });
 
     get("#highScoresModal").classList.add("shown");
+    get("#highScoresModal button").focus();
 }

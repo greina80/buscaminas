@@ -17,7 +17,7 @@
                 <div class="item">
                     <span class="label">Juego</span>
                     <div class="submenu">
-                        <div class="item">
+                        <div class="item" onclick="newGame()" data-hot-key="F2">
                             <div class="check"></div>
                             <div class="label">Nuevo</div>
                             <div class="hotkey">F2</div>
@@ -53,7 +53,7 @@
                 <div class="header">
                     <img class="icon" src="./img/trophy.svg" />
                     <span class="title">¡Nuevo récord!</span>
-                    <div class="close-button" onclick="closeModal(this)"></div>
+                    <div class="close-button" onclick="closeModal(this)" data-hot-key="Escape"></div>
                 </div>
                 <div class="content">
                     <img src="./img/party-popper.svg"/>
@@ -63,7 +63,7 @@
                     <span id="newRecordScore"></span>
                     <span>Nombre:</span>
                     <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20"/>
-                    <button onclick="saveNewRecord()">Aceptar</button>
+                    <button onclick="saveNewRecord()" data-hot-key="Enter">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                 <div class="header">
                     <img class="icon" src="./img/trophy.svg" />
                     <span class="title">Mejores puntuaciones</span>
-                    <div class="close-button" onclick="closeModal(this)"></div>
+                    <div class="close-button" onclick="closeModal(this)" data-hot-key="Escape"></div>
                 </div>
                 <div class="content">
                     <img src="./img/podium.svg"/>
@@ -81,12 +81,13 @@
                             <tr>
                                 <th>Nivel</th>
                                 <th>Puntuación</th>
-                                <th>Jugador</th>
                                 <th>Fecha</th>
+                                <th>Jugador</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
+                    <button onclick="closeModal(this)" data-hot-key="Enter">Aceptar</button>
                 </div>
             </div>
         </div>
