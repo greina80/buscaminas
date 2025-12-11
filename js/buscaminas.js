@@ -215,7 +215,7 @@ function newGame() {
     } // for
     
     getAll(".game-board td").forEach(cell => {
-        cell.className = isMine(cell.dataset.row, cell.dataset.col) ? "test" : "";
+        cell.className = "";
         cell.addEventListener("mousedown", onCellMouseDown);
         cell.addEventListener("contextmenu", onCellRightClick);
         cell.addEventListener("click", onCellLeftClick);

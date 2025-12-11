@@ -429,9 +429,3 @@ button:not(:disabled):active {
 #highScoresModal .content #highScoresTable th:not(:first-child) {
     padding-left: 1rem;
 }
-
-
-
-.game-board td:not(.flagged).test {
-    background-image: linear-gradient(red), linear-gradient(-45deg, gray 50%, white 50%) !important;
-}
