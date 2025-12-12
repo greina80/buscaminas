@@ -386,6 +386,7 @@ function saveNewRecord() {
 
     localStorage.setItem("high-scores", JSON.stringify(highScores));
     get("#newRecordModal").classList.remove("shown");
+    get("#newRecordName").value = "";
     showHighScores();
 }
 
