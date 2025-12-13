@@ -17,7 +17,7 @@
                 <div class="item">
                     <span class="label">Juego</span>
                     <div class="submenu">
-                        <div class="item" onclick="newGame()" data-hot-key="F2">
+                        <div class="item" onclick="newGame()" hotkey="F2">
                             <div class="check"></div>
                             <div class="label">Nuevo</div>
                             <div class="hotkey">F2</div>
@@ -28,6 +28,16 @@
                         <div class="item" onclick="showHighScores()">
                             <div class="check"></div>
                             <div class="label">Mejores puntuaciones</div>
+                            <div class="hotkey"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="label">Ayuda</span>
+                    <div class="submenu">
+                        <div class="item" onclick="showModal('aboutGameModal')">
+                            <div class="check"></div>
+                            <div class="label">Acerca de Buscaminas</div>
                             <div class="hotkey"></div>
                         </div>
                     </div>
@@ -53,7 +63,7 @@
                 <div class="header">
                     <img class="icon" src="./img/trophy.svg" />
                     <span class="title">¡Nuevo récord!</span>
-                    <div class="close-button" onclick="closeModal(this)" data-hot-key="Escape"></div>
+                    <div class="close-button" onclick="closeModal('newRecordModal')" hotkey="Escape"></div>
                 </div>
                 <div class="content">
                     <img src="./img/party-popper.svg"/>
@@ -62,8 +72,8 @@
                     <span>Puntuación:</span>
                     <span id="newRecordScore"></span>
                     <span>Nombre:</span>
-                    <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20"/>
-                    <button onclick="saveNewRecord()" data-hot-key="Enter">Aceptar</button>
+                    <input type="text" id="newRecordName" placeholder="Anónimo" maxlength="20" autofocus/>
+                    <button onclick="saveNewRecord()" hotkey="Enter">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -72,7 +82,7 @@
                 <div class="header">
                     <img class="icon" src="./img/trophy.svg" />
                     <span class="title">Mejores puntuaciones</span>
-                    <div class="close-button" onclick="closeModal(this)" data-hot-key="Escape"></div>
+                    <div class="close-button" onclick="closeModal('highScoresModal')" hotkey="Escape"></div>
                 </div>
                 <div class="content">
                     <img src="./img/podium.svg"/>
@@ -81,13 +91,26 @@
                             <tr>
                                 <th>Nivel</th>
                                 <th>Puntuación</th>
-                                <th>Fecha</th>
                                 <th>Jugador</th>
+                                <th>Fecha</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button onclick="closeModal(this)" data-hot-key="Enter">Aceptar</button>
+                    <button onclick="closeModal('highScoresModal')" hotkey="Enter" autofocus>Aceptar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="aboutGameModal">
+            <div class="window">
+                <div class="header">
+                    <span class="title">Acerca de Buscaminas</span>
+                    <div class="close-button" onclick="closeModal('aboutGameModal')" hotkey="Escape"></div>
+                </div>
+                <div class="content">
+                    <span>Creado por <a href="https://github.com/greina80" target="_blank">greina80</a> con:</span>
+                    <img src="./img/css-html-js.svg"/>
+                    <button onclick="closeModal('highScoresModal')" hotkey="Enter" autofocus>Aceptar</button>
                 </div>
             </div>
         </div>

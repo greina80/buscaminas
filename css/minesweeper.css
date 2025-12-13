@@ -361,6 +361,8 @@ button:not(:disabled):active {
     height: 100%;
     width: 100%;
     background-color: rgb(0, 0, 0, 0.7);
+    position: absolute;
+    z-index: 1;
 }
 
 .modal:not(.shown) {
@@ -425,4 +427,27 @@ button:not(:disabled):active {
 #highScoresModal .content #highScoresTable td:not(:first-child),
 #highScoresModal .content #highScoresTable th:not(:first-child) {
     padding-left: 1rem;
+}
+
+/* ABOUT GAME */
+
+#aboutGameModal .content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+#aboutGameModal .content img {
+    width: 16rem;
+}
+
+#aboutGameModal .content a::before {
+    content: "";
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    background: no-repeat center / 1rem url("../img/github.svg");
+    vertical-align: middle;
 }

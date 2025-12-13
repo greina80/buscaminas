@@ -69,12 +69,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function initializeWindows() {
     getAll(".window").forEach(window => {
-        // Making windows selectable elements:
+        // Enabling window scoped hoykeys:
         window.setAttribute("tabindex", "-1");
-
-        // Setting window scoped hotkeys:
-        window.querySelectorAll("[data-hot-key]").forEach(hotkeyedComponent => {
-            window.addEventListener("keyup", (event) => event.key === hotkeyedComponent.dataset.hotKey && hotkeyedComponent.click());
+        window.querySelectorAll("[hotkey]").forEach(hotkeyedComponent => {
+            window.addEventListener("keyup", (event) => event.key === hotkeyedComponent.getAttribute("hotKey") && hotkeyedComponent.click());
         });
 
         // Enablig window dragging:
@@ -213,8 +211,14 @@ const isMine = (row, col) => cellAt(row, col) && minePositions.includes(currentL
 
 // UTILS:
 
-function closeModal(closeBtn) {
-    closeBtn.closest(".modal").classList.remove("shown");
+function showModal(modalId) {
+    let modal = get("#" + modalId);
+    modal.classList.add("shown");
+    modal.querySelector("[autofocus]")?.focus();
+}
+
+function closeModal(modalId) {
+    get("#" + modalId).classList.remove("shown");
 }
 
 
@@ -370,8 +374,7 @@ function checkNewRecord() {
 
     get("#newRecordLevel").innerText = currentLevel.description;
     get("#newRecordScore").innerText = score + " segundos";
-    get("#newRecordModal").classList.add("shown");
-    get("#newRecordName").focus();
+    showModal("newRecordModal");
 }
 
 function saveNewRecord() {
@@ -386,7 +389,7 @@ function saveNewRecord() {
 
     localStorage.setItem("high-scores", JSON.stringify(highScores));
     get("#newRecordModal").classList.remove("shown");
-    get("#newRecordName").value = "";
+    closeModal("newRecordName");
     showHighScores();
 }
 
@@ -399,12 +402,11 @@ function showHighScores() {
             <tr>
                 <td>${highScore.levelName}</td>
                 <td>${highScore.score < 0 ? "-" : highScore.score + " segundos"} </td>
-                <td>${highScore.date}</td>
                 <td>${highScore.gamerName}</td>
+                <td>${highScore.date}</td>
             </tr>
         `;
     });
 
-    get("#highScoresModal").classList.add("shown");
-    get("#highScoresModal button").focus();
+    showModal("highScoresModal");
 }
