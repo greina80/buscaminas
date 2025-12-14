@@ -50,7 +50,8 @@ const getAll = document.querySelectorAll.bind(document);
  */
 
 document.addEventListener("DOMContentLoaded", function() {
-    document.addEventListener("contextmenu", (event) => event.preventDefault());    
+    document.addEventListener("contextmenu", (event) => event.preventDefault());   
+    window.addEventListener('resize', () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`));
     
     // Game initialization:
     initializeWindows();
