@@ -77,7 +77,7 @@ function initializeWindows() {
         });
 
         // Enablig window dragging:
-        window.querySelector(".header").addEventListener("mousedown", (event) => onDraggableComponentMouseDown(event, window));
+        makeDraggable(window, window.querySelector(".header"));
     });
 }
 
@@ -90,32 +90,45 @@ function initializeWindows() {
 // INITIALIZER:
 
 function initializeDragAbility() {
-    document.addEventListener("mousemove", onDocumentMouseMove);
-    document.addEventListener("mouseup"  , () => dragInfo.dragging = false);
+    document.addEventListener("mousemove", onDragMove);
+    document.addEventListener("touchmove", onDragMove);
+    document.addEventListener("mouseup"  , onDragEnd);
+    document.addEventListener("touchend" , onDragEnd);
 }
 
 // EVENT HANDLERS:
 
-function onDraggableComponentMouseDown(event, draggableComponent) {
+function onDragStart(event, draggableComponent) {
     dragInfo.dragging = true;
     dragInfo.component = draggableComponent || event.currentTarget;
-    dragInfo.x = dragInfo.component.offsetLeft - event.clientX;
-    dragInfo.y = dragInfo.component.offsetTop - event.clientY;
+    dragInfo.x = dragInfo.component.offsetLeft - (event.clientX || event.touches[0].clientX);
+    dragInfo.y = dragInfo.component.offsetTop - (event.clientY || event.touches[0].clientY);
 }
 
-function onDocumentMouseMove(event) {
+function onDragMove(event) {
     if (!dragInfo.dragging) return;
 
-    let mouseX = event.clientX;
+    let mouseX = (event.clientX || event.touches[0].clientX);
     if (mouseX < 0) mouseX = 0;
     if (mouseX > document.body.clientWidth) mouseX = document.body.clientWidth;
 
-    let mouseY = event.clientY;
+    let mouseY = (event.clientY || event.touches[0].clientY);
     if (mouseY < 0) mouseY = 0;
     if (mouseY > document.body.clientHeight) mouseY = document.body.clientHeight;
 
     dragInfo.component.style.left = mouseX + dragInfo.x + "px";
     dragInfo.component.style.top = mouseY + dragInfo.y + "px";
+}
+
+function onDragEnd() {
+    dragInfo.dragging = false;
+}
+
+// UTILS:
+
+function makeDraggable(component, dragRegion) {
+    (dragRegion || component).addEventListener("mousedown" , (event) => onDragStart(event, component));
+    (dragRegion || component).addEventListener("touchstart", (event) => onDragStart(event, component));    
 }
 
 
