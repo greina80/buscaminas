@@ -218,7 +218,14 @@ function showModal(modalId) {
 }
 
 function closeModal(modalId) {
-    get("#" + modalId).classList.remove("shown");
+    let modal = get("#" + modalId);
+    modal.classList.remove("shown");
+
+    // Reset windows position:
+    modal.querySelectorAll(".window").forEach(window => {
+        window.style.top = "";
+        window.style.left = "";
+    });
 }
 
 
