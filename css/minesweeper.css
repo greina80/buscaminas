@@ -166,6 +166,8 @@ button:not(:disabled):active {
 .menu > .item > .label {
     display: inline-block;
     padding: 0.25rem 0.75rem;
+    position: relative;
+    z-index: 2;
 }
 
 .menu > .item > .label:hover,
@@ -454,3 +456,4 @@ button:not(:disabled):active {
     vertical-align: middle;
 
 }
+
