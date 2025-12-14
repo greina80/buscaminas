@@ -153,6 +153,7 @@ button:not(:disabled):active {
     --menu-hover-color: white;
     --menu-hover-bg-color: #316AC5;
 
+    display: flex;
     border-bottom: 4px solid white;
 }
 
@@ -451,4 +452,5 @@ button:not(:disabled):active {
     height: 1rem;
     background: no-repeat center / 1rem url("../img/github.svg");
     vertical-align: middle;
+
 }
