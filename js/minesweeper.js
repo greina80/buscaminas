@@ -51,7 +51,7 @@ const getAll = document.querySelectorAll.bind(document);
 
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("contextmenu", (event) => event.preventDefault());   
-    window.addEventListener('resize', () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`));
+    window.addEventListener("resize", () => document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`));
     
     // Game initialization:
     initializeWindows();
@@ -201,7 +201,7 @@ function onCellMouseDown(event) {
 function onCellRightClick(event) {
     if (!event.currentTarget.matches(".flagged") && getCounterValue("num-mines") === 0) return;
     event.currentTarget.classList.toggle("flagged");
-    setCounterValue("num-mines", currentLevel.mines - getAll(".game-board .flagged").length);
+    setCounterValue("num-mines", currentLevel.mines - getAll(".game-board .cell.flagged").length);
 }
 
 function onCellLeftClick(event) {
@@ -209,12 +209,12 @@ function onCellLeftClick(event) {
     if (event.currentTarget.matches(".flagged")) return;
     if (isMine(event.currentTarget.dataset.row, event.currentTarget.dataset.col)) return gameLost(event.currentTarget);
     showCell(parseInt(event.currentTarget.dataset.row), parseInt(event.currentTarget.dataset.col));
-    if (getAll(".game-board td:not(.shown)").length === currentLevel.mines) gameWon();
+    if (getAll(".game-board .cell:not(.shown)").length === currentLevel.mines) gameWon();
 }
 
 // UTILS:
 
-const cellAt = (row, col) => get(`.game-board td[data-row="${row}"][data-col="${col}"]`);
+const cellAt = (row, col) => get(`.game-board .cell[data-row="${row}"][data-col="${col}"]`);
 const isMine = (row, col) => cellAt(row, col) && minePositions.includes(currentLevel.cols * parseInt(row) + parseInt(col));
 
 
@@ -257,17 +257,15 @@ function setLevel(newLevelId) {
 
     let gameBoard = get(".game-board");
     gameBoard.replaceChildren();
-    for (let r = 0; r < currentLevel.rows; r++) {
-        let row = document.createElement("tr");
+    gameBoard.style.gridTemplate = `repeat(${currentLevel.rows}, min-content) / repeat(${currentLevel.cols}, min-content)`;
 
+    for (let r = 0; r < currentLevel.rows; r++) {
         for (let c = 0; c < currentLevel.cols; c++) {
-            let cell = document.createElement("td");
+            let cell = document.createElement("div");
             cell.setAttribute("data-row", r);
             cell.setAttribute("data-col", c);
-            row.appendChild(cell);
+            gameBoard.appendChild(cell);
         } // for
-
-        gameBoard.appendChild(row);
     } // for
 
     newGame();
@@ -288,8 +286,8 @@ function newGame() {
         minePositions.push(position);
     } // for
     
-    getAll(".game-board td").forEach(cell => {
-        cell.className = "";
+    getAll(".game-board > div").forEach(cell => {
+        cell.className = "cell";
         cell.addEventListener("mousedown", onCellMouseDown);
         cell.addEventListener("contextmenu", onCellRightClick);
         cell.addEventListener("click", onCellLeftClick);
@@ -341,7 +339,7 @@ function gameLost(lastCell) {
     get(".main-button").classList.add("looser");
 
     // Revealing hidden mines:
-    getAll(".game-board td:not(.shown)").forEach(cell => {
+    getAll(".game-board .cell:not(.shown)").forEach(cell => {
         let _isMine = isMine(cell.dataset.row, cell.dataset.col);
         if (_isMine && !cell.matches(".flagged")) cell.classList.add("shown", "mine");
         else if (!_isMine && cell.matches(".flagged")) cell.classList.add("shown", "error");
@@ -353,7 +351,7 @@ function gameLost(lastCell) {
 
 function gameWon() {
     get(".main-button").classList.add("winner");
-    getAll(".game-board td:not(.shown)").forEach(cell => cell.classList.add("flagged"));
+    getAll(".game-board .cell:not(.shown)").forEach(cell => cell.classList.add("flagged"));
     setCounterValue("num-mines", 0);
     endGame();
     checkNewRecord();
@@ -363,7 +361,7 @@ function endGame() {
     clearInterval(timer);
     timer = null;
     
-    getAll(".game-board td").forEach(cell => {
+    getAll(".game-board .cell").forEach(cell => {
         cell.removeEventListener("mousedown", onCellMouseDown);
         cell.removeEventListener("contextmenu", onCellRightClick);
         cell.removeEventListener("click", onCellLeftClick);
